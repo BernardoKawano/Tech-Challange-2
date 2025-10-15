@@ -1,0 +1,102 @@
+{
+  "project": {
+    "name": "Sistema de Otimização de Rotas Médicas",
+    "version": "1.0.0",
+    "description": "Tech Challenge IADT - Fase 2"
+  },
+  
+  "genetic_algorithm": {
+    "population_size": 100,
+    "generations": 500,
+    "mutation_rate": 0.3,
+    "crossover_rate": 0.8,
+    "elitism_rate": 0.1,
+    "tournament_size": 5,
+    "convergence_threshold": 0.001,
+    "max_generations_without_improvement": 50
+  },
+  
+  "constraints": {
+    "vehicle_capacity_kg": 100,
+    "vehicle_capacity_volume_m3": 5,
+    "vehicle_autonomy_km": 150,
+    "max_route_duration_hours": 8,
+    "priorities": {
+      "critico": {
+        "weight": 10,
+        "max_delay_hours": 0
+      },
+      "alto": {
+        "weight": 5,
+        "max_delay_hours": 2
+      },
+      "medio": {
+        "weight": 2,
+        "max_delay_hours": 6
+      },
+      "baixo": {
+        "weight": 1,
+        "max_delay_hours": 24
+      }
+    }
+  },
+  
+  "fitness_weights": {
+    "distance": 1.0,
+    "capacity_penalty": 10.0,
+    "autonomy_penalty": 10.0,
+    "priority_bonus": 5.0,
+    "balance_penalty": 2.0,
+    "time_penalty": 3.0
+  },
+  
+  "llm": {
+    "provider": "openai",
+    "model": "gpt-4",
+    "api_key": "SUA-API-KEY-AQUI",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "fallback_provider": "anthropic",
+    "fallback_model": "claude-3-sonnet-20240229"
+  },
+  
+  "visualization": {
+    "map_center": [-23.5505, -46.6333],
+    "map_zoom": 12,
+    "enable_animation": true,
+    "save_images": true,
+    "output_directory": "outputs/visualizations/"
+  },
+  
+  "data": {
+    "depot_location": {
+      "name": "Hospital Central",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "address": "Rua Exemplo, 123 - São Paulo, SP"
+    },
+    "distance_calculation_method": "haversine",
+    "use_real_road_distances": false
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "save_to_file": true,
+    "log_directory": "logs/"
+  },
+  
+  "performance": {
+    "parallel_fitness_calculation": true,
+    "num_workers": 4,
+    "cache_distances": true
+  },
+  
+  "output": {
+    "save_best_solution": true,
+    "save_history": true,
+    "generate_reports": true,
+    "export_format": ["json", "csv", "excel"]
+  }
+}
+

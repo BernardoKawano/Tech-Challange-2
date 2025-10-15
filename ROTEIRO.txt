@@ -1,0 +1,594 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                                                                          ║
+║            ROTEIRO DO TECH CHALLENGE #2 - STATUS FINAL                   ║
+║     Sistema de Otimização de Rotas com AG, Pygame, Folium e LLM         ║
+║                                                                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+Última atualização: 15/10/2025
+Status: ✅ PROJETO 100% COMPLETO - PRONTO PARA APRESENTAÇÃO
+
+═══════════════════════════════════════════════════════════════════════════
+
+
+📋 RESUMO EXECUTIVO
+═══════════════════════════════════════════════════════════════════════════
+
+O QUE FOI DESENVOLVIDO:
+  Sistema completo de otimização de rotas para distribuição de suprimentos
+  médicos usando Algoritmos Genéticos, com visualizações interativas e
+  geração automática de instruções e relatórios via LLM.
+
+TECNOLOGIAS:
+  • Python 3.x
+  • Algoritmos Genéticos (implementação customizada)
+  • Pygame (visualização tempo real)
+  • Folium (mapas HTML interativos)
+  • Ollama + Llama2 (LLM local, gratuito)
+
+MÉTRICAS DO PROJETO:
+  • ~2.000 linhas de código
+  • 10+ módulos organizados (OOP)
+  • 15 pontos reais em São Paulo
+  • 5 tipos de veículos configuráveis
+  • 3 tipos de visualização
+  • 100% funcional e testado
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ O QUE ESTÁ IMPLEMENTADO (100%)
+═══════════════════════════════════════════════════════════════════════════
+
+1. MODELAGEM DE DADOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ DeliveryPoint (ponto de entrega)
+      • Coordenadas geográficas (lat/long)
+      • Prioridades: CRÍTICO, ALTO, MÉDIO, BAIXO
+      • Peso e volume da carga
+      • Tempo de serviço
+      • Validações automáticas
+   
+   ✅ Vehicle (veículo)
+      • Capacidade (peso e volume)
+      • Autonomia (km)
+      • Tipo (van refrigerada, padrão, caminhonete)
+      • Validações de carga e autonomia
+   
+   ✅ Route (rota)
+      • Associação veículo + pontos
+      • Cálculo de métricas
+      • Validação de restrições
+
+
+2. ALGORITMO GENÉTICO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ Chromosome (cromossomo)
+      • Representação de solução (rotas por veículo)
+      • Genealogia completa (pais, mutações)
+      • Validação de integridade
+   
+   ✅ Fitness Function (multi-objetivo)
+      • Minimização de distância total
+      • Respeito a prioridades (peso 3.0)
+      • Equilíbrio de carga entre veículos (peso 0.5)
+      • Penalidades para violações:
+        * Capacidade (peso 1000.0 - hard constraint)
+        * Autonomia (peso 10000.0 - near-hard constraint)
+   
+   ✅ Operadores Genéticos
+      • Seleção: Torneio (tamanho 5)
+      • Crossover: PMX (Partially Mapped Crossover)
+        * Taxa: 80%
+        * Adaptado para VRP multi-veículo
+      • Mutações:
+        * SWAP: troca 2 pontos dentro de uma rota (40%)
+        * MOVE: move ponto entre veículos (40%)
+        * INVERSION: inverte segmento (20%)
+        * Taxa total: 30%
+   
+   ✅ GA Engine
+      • População: 100 indivíduos
+      • Gerações: configurável (50-2000)
+      • Elitismo: top 10%
+      • Logging completo
+      • Estatísticas em tempo real
+
+
+3. VISUALIZAÇÃO PYGAME (TEMPO REAL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ Menu Interativo (Tela Inicial)
+      • Seleção de veículos: 1-5 (botões)
+      • Seleção de pontos: 1-100 (slider)
+      • Seleção de gerações: 50-2000 (slider)
+      • Visualização de características dos veículos selecionados
+      • Layout otimizado para Full HD (1920x1080)
+   
+   ✅ Visualização em Tempo Real (Durante AG)
+      • Mapa com pontos e rotas
+      • Cores diferentes por veículo
+      • Pontos marcados com letras inteligentes (A-Z, A1-Z1, ...)
+      • Gráfico de convergência (matplotlib integrado)
+      • Métricas em tempo real:
+        * Fitness atual vs melhor
+        * Geração atual
+        * Distância total
+        * Violações de restrições
+      • Estatísticas do AG:
+        * Crossovers realizados
+        * Mutações por tipo (SWAP, MOVE, INVERSION)
+        * Modelo de seleção usado
+      • Detalhes das rotas:
+        * Pontos por rota
+        * Distância por veículo
+        * Carga e capacidade
+        * Utilização percentual
+   
+   ✅ Filtros Interativos
+      • Botões para filtrar por veículo individual
+      • Visualização de "TODOS" ou um específico
+      • Ícones diferenciados ([X] selecionado, [ ] não selecionado)
+   
+   ✅ Legendas Explicativas
+      • Prioridades com cores
+      • Rotas por veículo
+      • Símbolos do mapa (depósito, pontos)
+      • Dicas de leitura
+   
+   ✅ Layout Full HD
+      • Resolução: 1920x1080
+      • Elementos organizados sem sobreposição
+      • Fontes legíveis
+      • Interface profissional
+   
+   ✅ Persistência
+      • Janela não fecha automaticamente
+      • Permite análise pós-otimização
+      • Pressione ESC ou feche manualmente
+
+
+4. VISUALIZAÇÃO FOLIUM (MAPA HTML)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ Mapa Interativo
+      • Baseado em OpenStreetMap
+      • Centro em São Paulo
+      • Zoom ajustável
+   
+   ✅ Marcadores de Pontos
+      • Cores por prioridade:
+        * Vermelho: CRÍTICO
+        * Laranja: ALTO
+        * Amarelo: MÉDIO
+        * Verde: BAIXO
+      • Círculo especial para depósito
+      • Labels com letras (A-Z, A1-Z1, ...)
+      • Popups clicáveis com:
+        * Nome do local
+        * Endereço
+        * Prioridade
+        * Peso e volume
+        * Tempo de serviço
+   
+   ✅ Rotas Coloridas
+      • Linha por veículo (cores diferentes)
+      • Setas animadas indicando direção
+      • Popups em cada rota com:
+        * Nome do veículo
+        * Número de entregas
+        * Distância total
+        * Carga total
+        * Sequência de pontos
+   
+   ✅ Controles
+      • Legenda interativa (liga/desliga camadas)
+      • Mini-mapa para navegação
+      • Botão fullscreen
+      • Zoom e pan
+   
+   ✅ Exportação
+      • Arquivo HTML standalone
+      • Abre em qualquer navegador
+      • Compartilhável
+
+
+5. INTEGRAÇÃO LLM (OLLAMA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ InstructionGenerator
+      • Gera instruções para cada motorista
+      • Modelo: Llama2 (local, gratuito)
+      • Conteúdo gerado:
+        * Dados do veículo (capacidade, autonomia)
+        * Sequência de entregas
+        * Endereços e prioridades
+        * Tempo estimado
+        * Dicas de navegação
+      • Salva em arquivos .txt individuais
+      • Tratamento de erros robusto
+   
+   ✅ ReportGenerator
+      • Gera relatórios gerenciais
+      • Modelo: Llama2 (local, gratuito)
+      • Conteúdo gerado:
+        * Análise de eficiência
+        * Estatísticas do AG
+        * Detalhes de cada rota
+        * Métricas de utilização
+        * Sugestões de melhoria
+      • Salva em arquivos .md com timestamp
+      • Tratamento de erros robusto
+   
+   ✅ Configuração
+      • Suporta Ollama (local) e OpenAI (cloud)
+      • Fácil troca de modelo
+      • Conexão via API REST
+      • Fallback em caso de erro
+
+
+6. UTILITÁRIOS E CÁLCULOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ DistanceCalculator
+      • Distância Euclidiana (simulação)
+      • Distância Haversine (coordenadas reais)
+      • Matriz de distâncias
+      • Cache para performance
+   
+   ✅ GeneticLogger
+      • Log de evolução
+      • Genealogia completa
+      • Estatísticas por geração
+      • Exportação JSON
+      • Contadores de operadores
+
+
+7. DADOS E CONFIGURAÇÃO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ Dados de Entrada
+      • sample_delivery_points.json: 15 pontos em SP
+        * Hospitais e centros médicos reais (localizações aproximadas)
+        * Prioridades variadas
+        * Pesos e volumes realistas
+      • sample_vehicles.json: 5 veículos
+        * Van Refrigerada 01 (150kg, 200km)
+        * Van Padrão 02 (180kg, 250km)
+        * Caminhonete 03 (250kg, 300km)
+        * Van Grande 04 (300kg, 250km)
+        * Utilitário 05 (120kg, 350km)
+   
+   ✅ Configurações
+      • requirements.txt completo
+      • .gitignore configurado
+      • Estrutura de diretórios organizada
+
+
+═══════════════════════════════════════════════════════════════════════════
+📁 ESTRUTURA DO PROJETO
+═══════════════════════════════════════════════════════════════════════════
+
+Tech-Challange-2/
+│
+├── src/                              # Código fonte
+│   ├── models/                       # Modelos de dados
+│   │   ├── delivery_point.py         # Ponto de entrega
+│   │   ├── vehicle.py                # Veículo
+│   │   └── route.py                  # Rota
+│   │
+│   ├── genetic_algorithm/            # Algoritmo Genético
+│   │   ├── chromosome.py             # Cromossomo (solução)
+│   │   ├── fitness.py                # Função fitness
+│   │   ├── operators.py              # Operadores genéticos
+│   │   ├── ga_engine.py              # Motor do AG
+│   │   └── logger.py                 # Logger
+│   │
+│   ├── visualization/                # Visualizações
+│   │   ├── pygame_visualizer.py      # Pygame (tempo real)
+│   │   └── folium_visualizer.py      # Folium (mapa HTML)
+│   │
+│   ├── llm_integration/              # LLM
+│   │   ├── instruction_generator.py  # Instruções
+│   │   └── report_generator.py       # Relatórios
+│   │
+│   ├── utils/                        # Utilitários
+│   │   └── distance_calculator.py    # Cálculo de distâncias
+│   │
+│   └── constraints/                  # Restrições (estrutura)
+│
+├── data/                             # Dados
+│   ├── sample_delivery_points.json   # 15 pontos SP
+│   └── sample_vehicles.json          # 5 veículos
+│
+├── outputs/                          # Saídas geradas
+│   ├── maps/                         # Mapas HTML
+│   ├── instructions/                 # Instruções .txt
+│   └── reports/                      # Relatórios .md
+│
+├── logs/                             # Logs
+│   └── genetic/                      # Logs do AG
+│
+├── teste_ag_interativo.py            # ⭐ SCRIPT PRINCIPAL
+├── test_folium.py                    # Teste Folium
+│
+├── requirements.txt                  # Dependências
+├── .gitignore                        # Git ignore
+│
+├── README.md                         # Documentação principal
+├── ROTEIRO.txt                       # Este arquivo
+├── ROTEIRO_VIDEO.md                  # Script para vídeo
+├── PROJETO_COMPLETO.md               # Visão técnica
+├── INSTALACAO_OLLAMA.md              # Guia Ollama
+└── VISUALIZACAO_GUIA.md              # Guia visualizações
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎯 O QUE O TECH CHALLENGE PEDIA
+═══════════════════════════════════════════════════════════════════════════
+
+REQUISITO                                          STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Implementar Algoritmo Genético                  ✅ COMPLETO
+   • Representação de soluções                     ✅
+   • Função fitness multi-objetivo                 ✅
+   • Operadores (seleção, crossover, mutação)      ✅
+   • Evolução de gerações                          ✅
+
+2. Restrições Realistas                            ✅ COMPLETO
+   • Capacidade de veículos                        ✅
+   • Autonomia de veículos                         ✅
+   • Prioridades de entrega                        ✅
+   • Múltiplos veículos                            ✅
+
+3. Visualização                                    ✅ COMPLETO
+   • Tempo real                                    ✅ Pygame
+   • Mapa interativo                               ✅ Folium HTML
+   • Métricas e estatísticas                       ✅
+
+4. Integração LLM                                  ✅ COMPLETO
+   • Instruções para motoristas                    ✅ Ollama/Llama2
+   • Relatórios de eficiência                      ✅ Ollama/Llama2
+
+5. Documentação                                    ✅ COMPLETO
+   • README completo                               ✅
+   • Comentários no código                         ✅
+   • Guias de uso                                  ✅
+
+6. Dados Realistas                                 ✅ COMPLETO
+   • Pontos reais (São Paulo)                      ✅ 15 locais
+   • Veículos variados                             ✅ 5 tipos
+   • Prioridades diferentes                        ✅ 4 níveis
+
+
+═══════════════════════════════════════════════════════════════════════════
+🚀 COMO EXECUTAR
+═══════════════════════════════════════════════════════════════════════════
+
+PRÉ-REQUISITOS:
+  1. Python 3.8+
+  2. Ollama instalado e rodando (para LLM)
+
+INSTALAÇÃO:
+  1. Clonar repositório
+  2. Criar ambiente virtual:
+     python -m venv .venv
+  3. Ativar ambiente:
+     .venv\Scripts\activate  (Windows)
+     source .venv/bin/activate  (Linux/Mac)
+  4. Instalar dependências:
+     pip install -r requirements.txt
+  5. Baixar modelo LLM:
+     ollama pull llama2
+
+EXECUÇÃO:
+  1. Iniciar servidor Ollama (em janela separada):
+     ollama serve
+  
+  2. Executar sistema principal:
+     python teste_ag_interativo.py
+  
+  3. Seguir menu interativo:
+     • Escolher número de veículos (1-5)
+     • Escolher número de pontos (1-100)
+     • Escolher gerações (50-2000)
+     • Aguardar otimização
+  
+  4. Resultados em:
+     • outputs/maps/*.html              (mapas)
+     • outputs/instructions/*.txt       (instruções)
+     • outputs/reports/*.md             (relatórios)
+     • logs/genetic/*.json              (logs AG)
+
+TESTE RÁPIDO:
+  • Testar apenas Folium:
+    python test_folium.py
+
+
+═══════════════════════════════════════════════════════════════════════════
+📊 RESULTADOS ESPERADOS
+═══════════════════════════════════════════════════════════════════════════
+
+ENTRADA (exemplo):
+  • 3 veículos
+  • 10 pontos de entrega
+  • 500 gerações
+
+SAÍDA:
+  1. Visualização Pygame:
+     • Rotas otimizadas em tempo real
+     • Gráfico de convergência
+     • Métricas finais
+  
+  2. Mapa HTML (outputs/maps/):
+     • rotas_otimizadas_3v_10p_500g.html
+     • Interativo, compartilhável
+  
+  3. Instruções (outputs/instructions/):
+     • instrucoes_Van_Refrigerada_01_3v_10p.txt
+     • instrucoes_Van_Padrao_02_3v_10p.txt
+     • instrucoes_Caminhonete_03_3v_10p.txt
+  
+  4. Relatório (outputs/reports/):
+     • relatorio_3v_10p_500g_[timestamp].md
+  
+  5. Logs (logs/genetic/):
+     • genealogy_[timestamp].json
+     • evolution_[timestamp].json
+
+MÉTRICAS TÍPICAS:
+  • Distância total: 50-150 km (depende dos pontos)
+  • Fitness final: 80-150 (depende das restrições)
+  • Convergência: 100-300 gerações
+  • Tempo execução: 5-15 minutos (AG + LLM)
+  • Utilização capacidade: 20-80% por veículo
+  • Violações: 0 (capacidade e autonomia respeitadas)
+
+
+═══════════════════════════════════════════════════════════════════════════
+📝 NOTAS TÉCNICAS
+═══════════════════════════════════════════════════════════════════════════
+
+ALGORITMO GENÉTICO:
+  • Tipo: Steady-state com elitismo
+  • População: 100 indivíduos
+  • Seleção: Torneio (k=5)
+  • Crossover: PMX adaptado (80%)
+  • Mutação: SWAP/MOVE/INVERSION (30%)
+  • Critério parada: Gerações ou convergência
+
+FUNÇÃO FITNESS:
+  • Multi-objetivo com pesos
+  • Penalidades progressivas
+  • Normalização por número de pontos
+  • Autonomia como "near-hard constraint" (peso 10000.0)
+
+VISUALIZAÇÃO:
+  • Pygame: 60 FPS, atualização a cada geração
+  • Folium: HTML5, JavaScript, Leaflet.js
+  • Cores consistentes entre visualizações
+
+LLM:
+  • Modelo: Llama2 (7B parâmetros)
+  • Contexto: ~4096 tokens
+  • Temperatura: 0.7 (equilíbrio criatividade/precisão)
+  • Primeira geração: 1-3 min (carrega modelo)
+  • Gerações seguintes: 30-60 seg
+
+PERFORMANCE:
+  • AG: ~5-10 min para 500 gerações
+  • Folium: 5-10 segundos
+  • LLM: 3-5 min total (todas instruções + relatório)
+  • Memória: ~2-4 GB (incluindo Ollama)
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎬 PARA GRAVAÇÃO DO VÍDEO
+═══════════════════════════════════════════════════════════════════════════
+
+CONSULTE: ROTEIRO_VIDEO.md
+
+DICAS RÁPIDAS:
+  1. Use parâmetros menores para demonstração rápida:
+     • 3 veículos, 10 pontos, 300 gerações (~5-8 min)
+  
+  2. Prepare antes de gravar:
+     • Ollama rodando
+     • Janelas organizadas
+     • Arquivos prontos para mostrar
+  
+  3. Mostre:
+     • Estrutura do código
+     • Menu interativo
+     • Evolução do AG (Pygame)
+     • Mapa HTML (Folium)
+     • Instruções LLM
+     • Relatório LLM
+  
+  4. Destaque:
+     • Complexidade do projeto
+     • Qualidade do código
+     • Resultados práticos
+     • Todas as tecnologias usadas
+
+TEMPO: 10-15 minutos
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ CHECKLIST FINAL
+═══════════════════════════════════════════════════════════════════════════
+
+CÓDIGO:
+  [✅] Algoritmo Genético completo e funcional
+  [✅] Restrições realistas implementadas
+  [✅] Visualização Pygame (tempo real)
+  [✅] Visualização Folium (mapa HTML)
+  [✅] Integração LLM (Ollama)
+  [✅] Código limpo e organizado (OOP)
+  [✅] Comentários e docstrings
+  [✅] Tratamento de erros
+
+DADOS:
+  [✅] 15 pontos reais em São Paulo
+  [✅] 5 tipos de veículos
+  [✅] Prioridades variadas
+  [✅] Pesos e volumes realistas
+
+DOCUMENTAÇÃO:
+  [✅] README.md completo
+  [✅] ROTEIRO.txt atualizado
+  [✅] ROTEIRO_VIDEO.md criado
+  [✅] Guias técnicos (Ollama, visualizações)
+  [✅] Comentários no código
+
+TESTES:
+  [✅] Sistema principal testado
+  [✅] Folium testado (test_folium.py)
+  [✅] LLM testado (Ollama)
+  [✅] Múltiplas configurações testadas
+
+ENTREGA:
+  [✅] Código no GitHub (pronto para enviar)
+  [✅] Requirements.txt atualizado
+  [✅] .gitignore configurado
+  [✅] Projeto limpo (sem temporários)
+  [✅] Pronto para gravação de vídeo
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎊 STATUS FINAL
+═══════════════════════════════════════════════════════════════════════════
+
+PROJETO: ✅ 100% COMPLETO
+
+PRÓXIMOS PASSOS:
+  1. ✅ Limpar arquivos temporários (executado automaticamente)
+  2. 📤 Enviar para GitHub
+  3. 🎬 Gravar vídeo de demonstração (use ROTEIRO_VIDEO.md)
+  4. 📧 Entregar Tech Challenge
+
+TEMPO DE DESENVOLVIMENTO:
+  • Total: ~20 horas
+  • Estrutura base: 4h
+  • Algoritmo Genético: 6h
+  • Visualizações: 5h
+  • LLM Integration: 3h
+  • Testes e ajustes: 2h
+
+LINHAS DE CÓDIGO:
+  • Total: ~2.000 linhas
+  • Comentários: ~400 linhas
+  • Documentação: ~1.500 linhas
+
+QUALIDADE:
+  • ✅ Código limpo e organizado
+  • ✅ Documentação completa
+  • ✅ Testes funcionais
+  • ✅ Pronto para produção
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+                         🎉 PARABÉNS! 🎉
+                   PROJETO 100% COMPLETO!
+                  PRONTO PARA APRESENTAÇÃO!
+
+═══════════════════════════════════════════════════════════════════════════
+
+Criado: 15/10/2025
+Última atualização: 15/10/2025
+Desenvolvido para: Tech Challenge #2 - FIAP

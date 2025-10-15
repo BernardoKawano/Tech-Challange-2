@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name": "Van Refrigerada 01",
+    "capacity_kg": 150.0,
+    "capacity_volume_m3": 8.0,
+    "autonomy_km": 200.0,
+    "cost_per_km": 3.5,
+    "average_speed_kmh": 35.0,
+    "driver_name": "João Silva",
+    "vehicle_type": "Van Refrigerada",
+    "is_refrigerated": true,
+    "notes": "Prioritária para medicamentos que necessitam refrigeração"
+  },
+  {
+    "id": 2,
+    "name": "Van Padrão 02",
+    "capacity_kg": 180.0,
+    "capacity_volume_m3": 10.0,
+    "autonomy_km": 250.0,
+    "cost_per_km": 2.8,
+    "average_speed_kmh": 40.0,
+    "driver_name": "Maria Oliveira",
+    "vehicle_type": "Van Padrão",
+    "is_refrigerated": false,
+    "notes": "Veículo versátil para entregas gerais"
+  },
+  {
+    "id": 3,
+    "name": "Caminhonete 03",
+    "capacity_kg": 250.0,
+    "capacity_volume_m3": 12.0,
+    "autonomy_km": 300.0,
+    "cost_per_km": 3.0,
+    "average_speed_kmh": 45.0,
+    "driver_name": "Pedro Santos",
+    "vehicle_type": "Caminhonete",
+    "is_refrigerated": false,
+    "notes": "Maior capacidade para entregas volumosas"
+  },
+  {
+    "id": 4,
+    "name": "Furgão Compacto 04",
+    "capacity_kg": 100.0,
+    "capacity_volume_m3": 5.0,
+    "autonomy_km": 180.0,
+    "cost_per_km": 2.2,
+    "average_speed_kmh": 38.0,
+    "driver_name": "Ana Costa",
+    "vehicle_type": "Furgão Compacto",
+    "is_refrigerated": false,
+    "notes": "Ótimo para entregas rápidas em áreas urbanas"
+  },
+  {
+    "id": 5,
+    "name": "Van Refrigerada 05",
+    "capacity_kg": 160.0,
+    "capacity_volume_m3": 9.0,
+    "autonomy_km": 220.0,
+    "cost_per_km": 3.5,
+    "average_speed_kmh": 35.0,
+    "driver_name": "Carlos Mendes",
+    "vehicle_type": "Van Refrigerada",
+    "is_refrigerated": true,
+    "notes": "Backup para medicamentos refrigerados"
+  }
+]
+
