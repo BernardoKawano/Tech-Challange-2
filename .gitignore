@@ -205,7 +205,32 @@ docs/_templates/
 *.zip
 
 # ==========================================
-# 17. ARQUIVOS PESSOAIS DO DESENVOLVEDOR
+# 17. ARQUIVOS DE PLANEJAMENTO INTERNO
+# ==========================================
+# Arquivos usados durante desenvolvimento mas
+# irrelevantes para avaliação do professor
+
+# Roteiros e planejamento
+ROTEIRO.txt
+ROTEIRO_VIDEO.md
+RESUMO_FINAL.txt
+LLM_COMPLETO_RESUMO.txt
+PRONTO_PARA_GITHUB.md
+PROJETO_COMPLETO.md
+
+# Guias de setup interno
+COMANDOS_GIT.txt
+COMECE_AQUI_GITHUB.txt
+COMO_USAR_QA.txt
+QA_VISUAL_SIMPLES.txt
+
+# Documentação redundante (info já está no README)
+INSTALACAO_OLLAMA.md
+INTEGRACAO_LLM_COMPLETA.md
+VISUALIZACAO_GUIA.md
+
+# ==========================================
+# 18. ARQUIVOS PESSOAIS DO DESENVOLVEDOR
 # ==========================================
 # Adicione aqui arquivos específicos que você
 # não quer commitar mas que não afetam a avaliação

@@ -96,8 +96,6 @@ ollama pull llama2
 ollama serve
 ```
 
-> 📖 **Guia completo:** [INSTALACAO_OLLAMA.md](INSTALACAO_OLLAMA.md)
-
 ### ▶️ Executar
 
 ```bash
@@ -127,6 +125,7 @@ Tech-Challenge-2/
 │
 ├── main.py                       ⭐ SCRIPT PRINCIPAL
 ├── test_folium.py                   Teste do visualizador Folium
+├── test_qa_system.py                Teste do sistema Q&A
 │
 ├── src/                             Código fonte
 │   ├── models/                      Modelos de dados
@@ -147,32 +146,33 @@ Tech-Challenge-2/
 │   │
 │   ├── llm_integration/             Integração LLM
 │   │   ├── instruction_generator.py • Gera instruções
-│   │   └── report_generator.py      • Gera relatórios
+│   │   ├── report_generator.py      • Gera relatórios
+│   │   └── qa_system.py             • Sistema Q&A
 │   │
-│   └── utils/                       Utilitários
-│       └── distance_calculator.py   • Cálculo de distâncias
+│   ├── utils/                       Utilitários
+│   │   └── distance_calculator.py   • Cálculo de distâncias
+│   │
+│   └── constraints/                 Restrições
+│       └── __init__.py              • Módulo de restrições
 │
 ├── data/                            Dados
 │   ├── sample_delivery_points.json  15 pontos reais em SP
 │   └── sample_vehicles.json         5 tipos de veículos
 │
-├── outputs/                         Saídas geradas
-│   ├── maps/                        • Mapas HTML
+├── config/                          Configurações
+│   └── config.example.json          Exemplo de configuração
+│
+├── outputs/                         Saídas geradas ⭐
+│   ├── maps/                        • Mapas HTML (exemplos incluídos)
 │   ├── instructions/                • Instruções .txt
 │   └── reports/                     • Relatórios .md
 │
-├── logs/                            Logs
-│   └── genetic/                     • Logs do AG
+├── logs/                            Logs ⭐
+│   └── genetic/                     • Logs do AG (*.json incluídos)
 │
 ├── requirements.txt                 Dependências
-├── .gitignore                       Git ignore
-│
-└── docs/                            Documentação
-    ├── ROTEIRO.txt                  Status do projeto
-    ├── ROTEIRO_VIDEO.md             Script para vídeo
-    ├── PROJETO_COMPLETO.md          Visão técnica
-    ├── INSTALACAO_OLLAMA.md         Guia Ollama
-    └── VISUALIZACAO_GUIA.md         Guia visualizações
+├── README.md                        Documentação principal ⭐
+└── .gitignore                       Git ignore
 ```
 
 ---
@@ -350,11 +350,7 @@ Análise completa da otimização:
 
 ### Guias Principais
 
-- **[ROTEIRO.txt](ROTEIRO.txt)** - Status completo do projeto ⭐
-- **[ROTEIRO_VIDEO.md](ROTEIRO_VIDEO.md)** - Script para gravação
-- **[PROJETO_COMPLETO.md](PROJETO_COMPLETO.md)** - Visão técnica detalhada
-- **[INSTALACAO_OLLAMA.md](INSTALACAO_OLLAMA.md)** - Configuração do LLM
-- **[VISUALIZACAO_GUIA.md](VISUALIZACAO_GUIA.md)** - Guia de visualizações
+Todas as informações necessárias estão consolidadas neste README.
 
 ### Dados de Entrada
 
@@ -584,10 +580,9 @@ Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fi
 
 - 🎥 [Vídeo Demonstração](#-demonstração) ⬆️
 - 📖 [Documentação Completa](#-documentação)
-- 🤖 [Guia Ollama](INSTALACAO_OLLAMA.md)
-- 🎮 [Guia Visualizações](VISUALIZACAO_GUIA.md)
-- 📋 [Status do Projeto](ROTEIRO.txt)
-- 🎬 [Roteiro do Vídeo](ROTEIRO_VIDEO.md)
+- 🚀 [Início Rápido](#-início-rápido)
+- 🧬 [Algoritmo Genético](#-algoritmo-genético)
+- 🤖 [Integração LLM](#-integração-llm)
 
 ---
 
