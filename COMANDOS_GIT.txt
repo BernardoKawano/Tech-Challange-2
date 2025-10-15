@@ -1,0 +1,222 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                                                                          ║
+║                     🚀 COMANDOS PARA ENVIAR AO GITHUB 🚀                 ║
+║                         COPIE E COLE NO TERMINAL                         ║
+║                                                                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════════════
+PASSO 1: INICIALIZAR GIT (Se ainda não foi)
+═══════════════════════════════════════════════════════════════════════════
+
+git init
+
+
+═══════════════════════════════════════════════════════════════════════════
+PASSO 2: ADICIONAR TODOS OS ARQUIVOS
+═══════════════════════════════════════════════════════════════════════════
+
+git add .
+
+
+═══════════════════════════════════════════════════════════════════════════
+PASSO 3: PRIMEIRO COMMIT
+═══════════════════════════════════════════════════════════════════════════
+
+git commit -m "feat: Sistema completo de otimização de rotas com AG e LLM
+
+- Algoritmo Genético customizado para VRP multi-veículo
+- Visualização Pygame (tempo real, Full HD, interativa)
+- Visualização Folium (mapas HTML interativos)
+- Integração LLM (Ollama/Llama2)
+- Geração automática de instruções para motoristas
+- Geração automática de relatórios gerenciais
+- 15 pontos reais em São Paulo
+- 5 tipos de veículos com restrições
+- Menu interativo para configuração
+- Filtros por veículo
+- Labels inteligentes (A-Z, A1-Z1...)
+- Documentação completa
+
+Tecnologias: Python, Pygame, Folium, Ollama, Matplotlib, NumPy
+
+Status: 100% funcional e testado"
+
+
+═══════════════════════════════════════════════════════════════════════════
+PASSO 4: CRIAR REPOSITÓRIO NO GITHUB
+═══════════════════════════════════════════════════════════════════════════
+
+🌐 Acesse: https://github.com/new
+
+Preencha:
+  • Repository name: Tech-Challenge-2
+  • Description: Sistema de otimização de rotas médicas com AG e LLM
+  • Public ou Private (sua escolha)
+  • NÃO marque "Add README" (já temos!)
+  • NÃO marque "Add .gitignore" (já temos!)
+  • NÃO marque "Choose a license" (opcional)
+
+Clique: "Create repository"
+
+
+═══════════════════════════════════════════════════════════════════════════
+PASSO 5: CONECTAR COM O GITHUB
+═══════════════════════════════════════════════════════════════════════════
+
+⚠️ SUBSTITUA "SEU-USUARIO" pelo seu username do GitHub!
+
+git remote add origin https://github.com/SEU-USUARIO/Tech-Challenge-2.git
+
+
+═══════════════════════════════════════════════════════════════════════════
+PASSO 6: ENVIAR PARA O GITHUB (PUSH)
+═══════════════════════════════════════════════════════════════════════════
+
+git branch -M main
+git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ PRONTO! CÓDIGO NO GITHUB!
+═══════════════════════════════════════════════════════════════════════════
+
+Acesse seu repositório:
+https://github.com/SEU-USUARIO/Tech-Challenge-2
+
+Verifique:
+  ✅ README.md aparece na página principal
+  ✅ Código está organizado
+  ✅ .gitignore funcionando (outputs/ e logs/ não aparecem)
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎥 DEPOIS: ADICIONAR LINK DO YOUTUBE
+═══════════════════════════════════════════════════════════════════════════
+
+1. Grave o vídeo (use ROTEIRO_VIDEO.md)
+2. Envie para o YouTube
+3. Copie o link do vídeo
+
+4. Edite README.md (linha 19):
+   
+   Mude de:
+   📺 **[ASSISTA NO YOUTUBE]** ➡️ `[COLOQUE O LINK AQUI]`
+   
+   Para:
+   📺 **[ASSISTA NO YOUTUBE]** ➡️ `https://youtu.be/SEU-VIDEO-ID`
+
+5. Salve e execute:
+
+git add README.md
+git commit -m "docs: Adiciona link do vídeo no YouTube"
+git push
+
+
+═══════════════════════════════════════════════════════════════════════════
+📝 OUTROS COMANDOS ÚTEIS
+═══════════════════════════════════════════════════════════════════════════
+
+Ver status dos arquivos:
+git status
+
+Ver histórico de commits:
+git log
+
+Ver diferenças não commitadas:
+git diff
+
+Adicionar arquivo específico:
+git add main.py
+
+Ver configuração do Git:
+git config --list
+
+Ver remotes configurados:
+git remote -v
+
+
+═══════════════════════════════════════════════════════════════════════════
+🔧 CONFIGURAR GIT (Se for primeira vez)
+═══════════════════════════════════════════════════════════════════════════
+
+git config --global user.name "Seu Nome"
+git config --global user.email "seu-email@exemplo.com"
+
+
+═══════════════════════════════════════════════════════════════════════════
+❓ PROBLEMAS COMUNS
+═══════════════════════════════════════════════════════════════════════════
+
+PROBLEMA: "fatal: not a git repository"
+SOLUÇÃO: git init
+
+PROBLEMA: "fatal: remote origin already exists"
+SOLUÇÃO: git remote rm origin
+         (depois adicione novamente)
+
+PROBLEMA: "Permission denied (publickey)"
+SOLUÇÃO: Use HTTPS em vez de SSH
+         git remote set-url origin https://github.com/SEU-USUARIO/Tech-Challenge-2.git
+
+PROBLEMA: "Authentication failed"
+SOLUÇÃO: 1. Gere um Personal Access Token no GitHub
+         2. Use como senha quando pedir
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎯 CHECKLIST RÁPIDO
+═══════════════════════════════════════════════════════════════════════════
+
+[ ] git init
+[ ] git add .
+[ ] git commit -m "..."
+[ ] Criar repo no GitHub (https://github.com/new)
+[ ] git remote add origin ...
+[ ] git push -u origin main
+[ ] Verificar no GitHub se apareceu
+[ ] Gravar vídeo
+[ ] Enviar para YouTube
+[ ] Atualizar README com link
+[ ] git add README.md
+[ ] git commit -m "docs: Adiciona link do vídeo"
+[ ] git push
+[ ] ENTREGAR TECH CHALLENGE! 🎉
+
+
+═══════════════════════════════════════════════════════════════════════════
+💡 DICA PRO
+═══════════════════════════════════════════════════════════════════════════
+
+Crie um arquivo .env na raiz (se quiser):
+
+GITHUB_USERNAME=seu-usuario
+GITHUB_REPO=Tech-Challenge-2
+YOUTUBE_VIDEO=https://youtu.be/SEU-VIDEO-ID
+
+Mas NÃO commite este arquivo! (já está no .gitignore)
+
+
+═══════════════════════════════════════════════════════════════════════════
+📊 BADGES PARA ADICIONAR NO README (OPCIONAL)
+═══════════════════════════════════════════════════════════════════════════
+
+Depois que o repo estiver no GitHub, você pode adicionar badges reais:
+
+![Stars](https://img.shields.io/github/stars/SEU-USUARIO/Tech-Challenge-2)
+![Forks](https://img.shields.io/github/forks/SEU-USUARIO/Tech-Challenge-2)
+![Issues](https://img.shields.io/github/issues/SEU-USUARIO/Tech-Challenge-2)
+![Last Commit](https://img.shields.io/github/last-commit/SEU-USUARIO/Tech-Challenge-2)
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+                    🚀 BOA SORTE! VOCÊ CONSEGUE! 🚀
+
+═══════════════════════════════════════════════════════════════════════════
+
+Criado: 15/10/2025
+Projeto: Tech Challenge #2 - FIAP
+
+═══════════════════════════════════════════════════════════════════════════
+

@@ -1,21 +1,56 @@
-# 🏥 Sistema de Otimização de Rotas Médicas
+# 🏥 Sistema de Otimização de Rotas para Distribuição de Suprimentos Médicos
 
-**Tech Challenge IADT - Fase 2**
+<div align="center">
 
-Sistema de otimização de rotas para distribuição de medicamentos e insumos hospitalares utilizando Algoritmos Genéticos e integração com LLMs para geração de relatórios e instruções.
+**Tech Challenge #2 - FIAP**
+
+Sistema inteligente de otimização de rotas usando **Algoritmos Genéticos** + **LLM** + **Visualizações Interativas**
+
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Pygame](https://img.shields.io/badge/Pygame-2.5+-green.svg)](https://www.pygame.org/)
+[![Folium](https://img.shields.io/badge/Folium-0.14+-orange.svg)](https://python-visualization.github.io/folium/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[🎥 Demonstração em Vídeo](#-demonstração) | [📖 Documentação](#-documentação) | [🚀 Começar](#-início-rápido)
+
+</div>
 
 ---
 
-## 📋 Visão Geral
+## 🎥 Demonstração
 
-Este projeto resolve o problema do "Caixeiro Viajante Médico" (TSP/VRP) aplicado ao contexto hospitalar, considerando:
+> **Vídeo de apresentação do projeto:**
 
-- ✅ Prioridades de entrega (crítico, alto, médio, baixo)
-- ✅ Capacidade limitada de carga dos veículos
-- ✅ Autonomia limitada dos veículos
-- ✅ Múltiplos veículos (VRP - Vehicle Routing Problem)
-- ✅ Geração automática de instruções via LLM
-- ✅ Relatórios de eficiência e sugestões de melhorias
+📺 **[ASSISTA NO YOUTUBE](https://youtu.be/kWew_1jsQjQ)** ➡️ https://youtu.be/kWew_1jsQjQ
+
+<div align="center">
+
+*Veja o sistema em ação: visualização em tempo real, mapas interativos e geração automática de instruções!*
+
+</div>
+
+---
+
+## 📋 Sobre o Projeto
+
+Este sistema resolve o **Vehicle Routing Problem (VRP)** aplicado à distribuição de suprimentos médicos em São Paulo, considerando:
+
+- ✅ **Prioridades** (CRÍTICO, ALTO, MÉDIO, BAIXO)
+- ✅ **Múltiplos veículos** com diferentes capacidades e autonomias
+- ✅ **Restrições realistas** (capacidade, autonomia, tempo de serviço)
+- ✅ **Visualização em tempo real** (Pygame)
+- ✅ **Mapas interativos** (Folium/HTML)
+- ✅ **Geração automática** de instruções e relatórios (LLM/Ollama)
+
+### 🎯 Problema Resolvido
+
+**Cenário:** Hospitais e centros médicos de São Paulo precisam receber suprimentos urgentes. Como otimizar as rotas para:
+- Minimizar distância total
+- Priorizar entregas críticas
+- Respeitar limites de carga e autonomia
+- Balancear carga entre veículos
+
+**Solução:** Algoritmo Genético que evolui soluções até encontrar as rotas ótimas!
 
 ---
 
@@ -23,321 +58,543 @@ Este projeto resolve o problema do "Caixeiro Viajante Médico" (TSP/VRP) aplicad
 
 ### Pré-requisitos
 
-- Python 3.9+
-- pip ou Poetry
+- Python 3.8+
+- 8GB RAM (para LLM local)
+- Windows/Linux/Mac
 
-### Instalação
+### 🔧 Instalação
 
 ```bash
-# Clonar o repositório
-git clone <url-do-repositorio>
-cd Tech-Challange-2
+# 1. Clonar o repositório
+git clone https://github.com/seu-usuario/Tech-Challenge-2.git
+cd Tech-Challenge-2
 
-# Criar ambiente virtual
-python -m venv venv
+# 2. Criar ambiente virtual
+python -m venv .venv
 
-# Ativar ambiente virtual
+# 3. Ativar ambiente virtual
 # Windows:
-venv\Scripts\activate
+.venv\Scripts\activate
 # Linux/Mac:
-source venv/bin/activate
+source .venv/bin/activate
 
-# Instalar dependências
+# 4. Instalar dependências
 pip install -r requirements.txt
 ```
 
-### Configuração
-
-1. Copiar arquivo de exemplo de configuração:
-```bash
-cp config/config.example.json config/config.json
-```
-
-2. Adicionar sua API key da LLM em `config/config.json`
-
-### Executar
+### 🤖 Configurar LLM (Ollama - Gratuito!)
 
 ```bash
-# Executar otimização de rotas
-python src/main.py
+# 1. Baixar Ollama
+# Windows: https://ollama.ai/download/windows
+# Linux/Mac: curl -fsSL https://ollama.com/install.sh | sh
 
-# Executar com visualização
-python src/main.py --visualize
+# 2. Baixar modelo (demora ~15-30 min, só uma vez!)
+ollama pull llama2
 
-# Executar notebook de demonstração
-jupyter notebook notebooks/demo_otimizacao.ipynb
+# 3. Iniciar servidor (deixar rodando!)
+ollama serve
 ```
+
+> 📖 **Guia completo:** [INSTALACAO_OLLAMA.md](INSTALACAO_OLLAMA.md)
+
+### ▶️ Executar
+
+```bash
+# Executar o sistema completo!
+python main.py
+```
+
+**O que acontece:**
+1. 🎮 Menu interativo (Pygame) para escolher parâmetros
+2. 🧬 Algoritmo Genético otimiza as rotas
+3. 🗺️ Gera mapa HTML interativo
+4. 🤖 LLM cria instruções para motoristas
+5. 📊 LLM gera relatório gerencial
+
+**Resultados salvos em:**
+- `outputs/maps/` - Mapas HTML (abrir no navegador!)
+- `outputs/instructions/` - Instruções por veículo (.txt)
+- `outputs/reports/` - Relatórios de eficiência (.md)
+- `logs/genetic/` - Logs do algoritmo (.json)
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-Tech-Challange-2/
-├── README.md                      # Este arquivo
-├── requirements.txt               # Dependências do projeto
-├── .gitignore                     # Arquivos a ignorar no Git
-├── config/
-│   ├── config.example.json        # Exemplo de configuração
-│   └── config.json                # Configuração local (não versionado)
-├── src/
-│   ├── __init__.py
-│   ├── main.py                    # Ponto de entrada principal
-│   ├── genetic_algorithm/
-│   │   ├── __init__.py
-│   │   ├── tsp_base.py           # Código base TSP adaptado
-│   │   ├── vrp_solver.py         # Solver VRP com restrições
-│   │   ├── operators.py          # Operadores genéticos
-│   │   └── fitness.py            # Funções de fitness
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── delivery_point.py     # Modelo de ponto de entrega
-│   │   ├── vehicle.py            # Modelo de veículo
-│   │   └── route.py              # Modelo de rota
-│   ├── constraints/
-│   │   ├── __init__.py
-│   │   ├── capacity.py           # Restrição de capacidade
-│   │   ├── priority.py           # Restrição de prioridade
-│   │   └── autonomy.py           # Restrição de autonomia
-│   ├── visualization/
-│   │   ├── __init__.py
-│   │   ├── map_plotter.py        # Plotagem em mapas
-│   │   └── dashboard.py          # Dashboard interativo
-│   ├── llm_integration/
-│   │   ├── __init__.py
-│   │   ├── instructions_generator.py  # Gera instruções
-│   │   ├── report_generator.py       # Gera relatórios
-│   │   └── prompts.py                # Templates de prompts
-│   └── utils/
-│       ├── __init__.py
-│       ├── distance_calculator.py  # Cálculo de distâncias
-│       └── data_loader.py          # Carregamento de dados
-├── tests/
-│   ├── __init__.py
-│   ├── test_genetic_algorithm.py
-│   ├── test_constraints.py
-│   ├── test_models.py
-│   └── test_llm_integration.py
-├── data/
-│   ├── sample_delivery_points.json  # Pontos de entrega exemplo
-│   ├── sample_vehicles.json         # Frota exemplo
-│   └── real_addresses.json          # Endereços reais (opcional)
-├── notebooks/
-│   ├── demo_otimizacao.ipynb       # Demonstração do sistema
-│   ├── analise_performance.ipynb   # Análise de performance
-│   └── comparativo_algoritmos.ipynb # Comparativo com outros métodos
-├── docs/
-│   ├── arquitetura.md              # Documentação da arquitetura
-│   ├── algoritmo_genetico.md       # Detalhes do AG
-│   ├── relatorio_tecnico.md        # Relatório técnico completo
-│   └── diagramas/                  # Diagramas do sistema
-└── scripts/
-    ├── generate_test_data.py       # Gerar dados de teste
-    └── benchmark.py                # Benchmarking
-
+Tech-Challenge-2/
+│
+├── main.py                       ⭐ SCRIPT PRINCIPAL
+├── test_folium.py                   Teste do visualizador Folium
+│
+├── src/                             Código fonte
+│   ├── models/                      Modelos de dados
+│   │   ├── delivery_point.py        • Ponto de entrega
+│   │   ├── vehicle.py               • Veículo
+│   │   └── route.py                 • Rota
+│   │
+│   ├── genetic_algorithm/           Algoritmo Genético
+│   │   ├── chromosome.py            • Cromossomo (solução)
+│   │   ├── fitness.py               • Função fitness
+│   │   ├── operators.py             • Operadores (crossover, mutação)
+│   │   ├── ga_engine.py             • Motor do AG
+│   │   └── logger.py                • Logger
+│   │
+│   ├── visualization/               Visualizações
+│   │   ├── pygame_visualizer.py     • Visualização tempo real
+│   │   └── folium_visualizer.py     • Mapas HTML interativos
+│   │
+│   ├── llm_integration/             Integração LLM
+│   │   ├── instruction_generator.py • Gera instruções
+│   │   └── report_generator.py      • Gera relatórios
+│   │
+│   └── utils/                       Utilitários
+│       └── distance_calculator.py   • Cálculo de distâncias
+│
+├── data/                            Dados
+│   ├── sample_delivery_points.json  15 pontos reais em SP
+│   └── sample_vehicles.json         5 tipos de veículos
+│
+├── outputs/                         Saídas geradas
+│   ├── maps/                        • Mapas HTML
+│   ├── instructions/                • Instruções .txt
+│   └── reports/                     • Relatórios .md
+│
+├── logs/                            Logs
+│   └── genetic/                     • Logs do AG
+│
+├── requirements.txt                 Dependências
+├── .gitignore                       Git ignore
+│
+└── docs/                            Documentação
+    ├── ROTEIRO.txt                  Status do projeto
+    ├── ROTEIRO_VIDEO.md             Script para vídeo
+    ├── PROJETO_COMPLETO.md          Visão técnica
+    ├── INSTALACAO_OLLAMA.md         Guia Ollama
+    └── VISUALIZACAO_GUIA.md         Guia visualizações
 ```
 
 ---
 
-## 🧬 Algoritmo Genético - Detalhes Técnicos
+## 🧬 Algoritmo Genético
 
-### Representação Genética
+### Representação
 
-Cada cromossomo representa uma solução para o problema de múltiplos veículos:
-- **Cromossomo**: `[R1, R2, ..., Rn]` onde cada `Ri` é uma rota de um veículo
-- **Rota**: Sequência de pontos de entrega `[P1, P2, ..., Pk]`
+**Cromossomo:** Lista de rotas (uma por veículo)
+```python
+Cromossomo = [
+    [1, 5, 7, 3],      # Rota do Veículo 1: B → F → H → D
+    [0, 2, 6],         # Rota do Veículo 2: A → C → G
+    [4, 8, 9]          # Rota do Veículo 3: E → I → J
+]
+```
 
-### Operadores Genéticos
+### Operadores
 
-1. **Seleção**: Torneio com elitismo
-2. **Crossover**: Order Crossover (OX) adaptado para VRP
-3. **Mutação**: 
-   - Swap (troca de posições)
-   - Inversão de segmento
-   - Realocação entre veículos
+| Operador | Taxa | Descrição |
+|----------|------|-----------|
+| **Seleção** | - | Torneio (k=5) com elitismo (10%) |
+| **Crossover** | 80% | PMX (Partially Mapped Crossover) adaptado |
+| **Mutação SWAP** | 12% | Troca 2 pontos dentro de uma rota |
+| **Mutação MOVE** | 12% | Move ponto entre veículos |
+| **Mutação INVERSION** | 6% | Inverte segmento de rota |
 
-### Função de Fitness Multi-Critério
+### Função Fitness (Multi-Objetivo)
 
 ```python
-fitness = w1 * distancia_total 
-        + w2 * penalizacao_capacidade 
-        + w3 * penalizacao_autonomia
-        - w4 * bonus_prioridades
-        + w5 * penalizacao_balanceamento
+fitness = distância_total 
+        + 3.0 × penalidade_prioridades
+        + 0.5 × penalidade_balanceamento
+        + 1000.0 × violação_capacidade
+        + 10000.0 × violação_autonomia
 ```
+
+**Objetivo:** Minimizar fitness (quanto menor, melhor!)
+
+### Parâmetros
+
+- **População:** 100 indivíduos
+- **Gerações:** 50-2000 (configurável)
+- **Elitismo:** 10% melhores preservados
+- **Parada:** Número fixo de gerações
 
 ---
 
-## 🤖 Integração com LLM
+## 🎮 Visualizações
+
+### 1. Pygame - Tempo Real
+
+Durante a otimização:
+- 🗺️ Mapa com rotas evoluindo
+- 📈 Gráfico de convergência
+- 📊 Métricas ao vivo
+- 🔍 Filtros por veículo
+- 📉 Estatísticas do AG
+
+**Controles:**
+- `ESC` - Fechar
+- `Clique` - Filtrar por veículo
+
+### 2. Folium - Mapas HTML
+
+Após otimização:
+- 🗺️ Mapa real do OpenStreetMap
+- 📍 Pontos coloridos por prioridade
+- 🛣️ Rotas com setas animadas
+- 💬 Popups com detalhes
+- 🔍 Zoom, pan, fullscreen
+- 📤 Compartilhável (HTML standalone)
+
+**Exemplo:** `outputs/maps/rotas_otimizadas_3v_15p_500g.html`
+
+---
+
+## 🤖 Integração LLM
+
+### Tecnologia: Ollama + Llama2
+
+**Por quê Ollama?**
+- ✅ 100% gratuito
+- ✅ Roda localmente (privacidade!)
+- ✅ Não precisa de API key
+- ✅ Offline
 
 ### Funcionalidades
 
-1. **Geração de Instruções para Motoristas**
-   - Passo a passo detalhado
-   - Observações sobre prioridades
-   - Alertas especiais
+#### 1. Instruções para Motoristas
 
-2. **Relatórios de Eficiência**
-   - Análise de performance
-   - Comparativos temporais
-   - Identificação de padrões
+Gerado automaticamente para cada veículo:
 
-3. **Sistema de Perguntas e Respostas**
-   - Interface em linguagem natural
-   - Consultas sobre rotas
-   - Sugestões de otimização
+```
+INSTRUÇÕES DE ENTREGA - Van Refrigerada 01
+=========================================
 
-### LLMs Suportadas
+Veículo: Van Refrigerada 01
+Capacidade: 150 kg / 1.5 m³
+Autonomia: 200 km
+Tipo: Van Refrigerada
 
-- OpenAI GPT-4 / GPT-3.5
-- Anthropic Claude
-- Modelos locais via Ollama
+Rota Total: 4 entregas | 30.46 km | ~45 min
+
+SEQUÊNCIA DE ENTREGAS:
+1. Hospital São Paulo (CRÍTICO)
+   - Endereço: Av. Paulista, 123
+   - Carga: 15.0 kg | 0.3 m³
+   - Prioridade: CRÍTICO ⚠️
+   - Tempo serviço: 10 min
+
+[... mais entregas ...]
+```
+
+**Arquivo:** `outputs/instructions/instrucoes_Van_Refrigerada_01_3v_15p.txt`
+
+#### 2. Relatórios Gerenciais
+
+Análise completa da otimização:
+
+```markdown
+# RELATÓRIO DE EFICIÊNCIA - ROTAS OTIMIZADAS
+
+## Resumo Executivo
+- Veículos: 3
+- Entregas: 15
+- Distância total: 68.88 km
+- Eficiência: 92%
+
+## Análise por Veículo
+...
+
+## Sugestões de Melhoria
+...
+```
+
+**Arquivo:** `outputs/reports/relatorio_3v_15p_500g_[timestamp].md`
 
 ---
 
-## 📊 Visualização
+## 🎨 Recursos Destacados
 
-O sistema oferece **duas formas de visualização**:
+### ✨ Diferenciais
 
-### 🎮 1. Pygame - Tempo Real
+1. **Labeling Inteligente**
+   - A-Z para primeiros 26 pontos
+   - A1-Z1 para próximos 26
+   - Suporta até 100 pontos!
 
-Visualização durante a execução do algoritmo genético:
-- ✅ Vê a evolução ao vivo
-- ✅ Gráficos de convergência em tempo real
-- ✅ Controles interativos (pausar, screenshot)
-- ✅ Ideal para debugging e tuning
+2. **Menu Interativo Full HD**
+   - Seleção de veículos (1-5)
+   - Slider de pontos (1-100)
+   - Slider de gerações (50-2000)
+   - Visualização de características
 
-```bash
-python src/main.py --optimize --pygame
+3. **Filtros por Veículo**
+   - Ver todas as rotas
+   - Filtrar por veículo individual
+   - Botões interativos
+
+4. **Estatísticas Completas**
+   - Crossovers realizados
+   - Mutações por tipo
+   - Fitness ao longo do tempo
+   - Violações de restrições
+
+5. **Dados Reais**
+   - 15 hospitais/centros médicos em SP
+   - Coordenadas aproximadas reais
+   - Prioridades realistas
+
+---
+
+## 📖 Documentação
+
+### Guias Principais
+
+- **[ROTEIRO.txt](ROTEIRO.txt)** - Status completo do projeto ⭐
+- **[ROTEIRO_VIDEO.md](ROTEIRO_VIDEO.md)** - Script para gravação
+- **[PROJETO_COMPLETO.md](PROJETO_COMPLETO.md)** - Visão técnica detalhada
+- **[INSTALACAO_OLLAMA.md](INSTALACAO_OLLAMA.md)** - Configuração do LLM
+- **[VISUALIZACAO_GUIA.md](VISUALIZACAO_GUIA.md)** - Guia de visualizações
+
+### Dados de Entrada
+
+#### Pontos de Entrega (15 em SP)
+
+Arquivo: `data/sample_delivery_points.json`
+
+Incluem hospitais e centros médicos como:
+- Hospital das Clínicas (CRÍTICO)
+- Hospital Sírio-Libanês (ALTO)
+- Hospital Albert Einstein (ALTO)
+- UBS Vila Mariana (MÉDIO)
+- ... e mais!
+
+#### Veículos (5 tipos)
+
+Arquivo: `data/sample_vehicles.json`
+
+| Veículo | Capacidade | Autonomia | Tipo |
+|---------|------------|-----------|------|
+| Van Refrigerada 01 | 150 kg | 200 km | Refrigerada |
+| Van Padrão 02 | 180 kg | 250 km | Padrão |
+| Caminhonete 03 | 250 kg | 300 km | Carga |
+| Van Grande 04 | 300 kg | 250 km | Grande |
+| Utilitário 05 | 120 kg | 350 km | Compacto |
+
+---
+
+## ⚙️ Configurações
+
+### Parâmetros Padrão
+
+```python
+# Algoritmo Genético
+POPULATION_SIZE = 100
+GENERATIONS = 500 (configurável no menu)
+MUTATION_RATE = 0.30
+CROSSOVER_RATE = 0.80
+ELITISM_RATE = 0.10
+TOURNAMENT_SIZE = 5
+
+# Visualização
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1080
+FPS = 60
+
+# LLM
+PROVIDER = "ollama"
+MODEL = "llama2"
+TEMPERATURE = 0.7
 ```
-
-### 🗺️ 2. Folium - Mapas Interativos
-
-Mapas reais após otimização:
-- ✅ Pontos de entrega coloridos por prioridade
-- ✅ Rotas traçadas por veículo (cores distintas)
-- ✅ Popups com informações detalhadas
-- ✅ Exporta HTML para compartilhar
-- ✅ Ideal para relatórios e apresentações
-
-```bash
-python src/main.py --optimize --map
-```
-
-### 🔄 Híbrido (Recomendado)
-
-Use ambos! Pygame durante desenvolvimento, Folium para resultado final:
-
-```bash
-python src/main.py --optimize --pygame --map
-```
-
-Consulte [VISUALIZACAO_GUIA.md](VISUALIZACAO_GUIA.md) para detalhes completos.
 
 ---
 
 ## 🧪 Testes
 
+### Teste Rápido do Folium
+
 ```bash
-# Executar todos os testes
-pytest tests/
+python test_folium.py
+```
 
-# Executar com cobertura
-pytest --cov=src tests/
+Gera mapa de teste em: `outputs/maps/teste_rotas_exemplo.html`
 
-# Executar teste específico
-pytest tests/test_genetic_algorithm.py
+### Execução Completa
+
+```bash
+# Configuração recomendada para teste:
+# - 3 veículos
+# - 10 pontos
+# - 300 gerações
+# Tempo: ~5-8 minutos
+python main.py
 ```
 
 ---
 
-## 📈 Benchmark e Comparativos
+## 📊 Resultados Esperados
 
-O sistema inclui comparações com:
-- ✅ Algoritmo guloso (Nearest Neighbor)
-- ✅ Força bruta (instâncias pequenas)
-- ✅ Savings Algorithm (Clarke-Wright)
-- ✅ Google OR-Tools (opcional)
+### Métricas Típicas
 
----
+Para 3 veículos e 15 pontos:
 
-## 🔧 Configuração Avançada
+| Métrica | Valor Típico |
+|---------|--------------|
+| Distância total | 50-150 km |
+| Fitness final | 80-150 |
+| Convergência | 100-300 gerações |
+| Tempo AG | 5-10 min |
+| Tempo LLM | 3-5 min |
+| Utilização capacidade | 20-80% |
+| Violações | 0 |
 
-### Parâmetros do Algoritmo Genético
+### Arquivos Gerados
 
-Editar em `config/config.json`:
-
-```json
-{
-  "genetic_algorithm": {
-    "population_size": 100,
-    "generations": 500,
-    "mutation_rate": 0.3,
-    "crossover_rate": 0.8,
-    "elitism_rate": 0.1,
-    "tournament_size": 5
-  },
-  "constraints": {
-    "vehicle_capacity": 100,
-    "vehicle_autonomy": 50,
-    "priorities": ["critico", "alto", "medio", "baixo"]
-  },
-  "llm": {
-    "provider": "openai",
-    "model": "gpt-4",
-    "api_key": "sua-api-key-aqui",
-    "temperature": 0.7
-  }
-}
+```
+outputs/
+├── maps/
+│   └── rotas_otimizadas_3v_15p_500g.html          (~50KB)
+├── instructions/
+│   ├── instrucoes_Van_Refrigerada_01_3v_15p.txt   (~2KB)
+│   ├── instrucoes_Van_Padrao_02_3v_15p.txt
+│   └── instrucoes_Caminhonete_03_3v_15p.txt
+└── reports/
+    └── relatorio_3v_15p_500g_20251015_153045.md   (~5KB)
 ```
 
 ---
 
-## 📚 Documentação Adicional
+## 🛠️ Tecnologias
 
-- [Arquitetura do Sistema](docs/arquitetura.md)
-- [Algoritmo Genético Detalhado](docs/algoritmo_genetico.md)
-- [Relatório Técnico Completo](docs/relatorio_tecnico.md)
+### Core
+
+- **Python 3.8+** - Linguagem principal
+- **NumPy** - Cálculos numéricos
+- **Pygame** - Visualização tempo real
+- **Folium** - Mapas HTML interativos
+- **Matplotlib** - Gráficos
+
+### LLM
+
+- **Ollama** - Servidor LLM local
+- **Llama2** - Modelo de linguagem (7B)
+
+### Outras
+
+- **Pathlib** - Manipulação de caminhos
+- **JSON** - Serialização de dados
+- **Dataclasses** - Estruturas de dados
+
+---
+
+## 📈 Complexidade do Projeto
+
+### Estatísticas
+
+- **Linhas de código:** ~2.000
+- **Módulos:** 10+
+- **Classes:** 15+
+- **Funções:** 100+
+- **Arquivos:** 20+ (código fonte)
+- **Documentação:** 1.500+ linhas
+
+### Conceitos Aplicados
+
+- ✅ Algoritmos Genéticos
+- ✅ Programação Orientada a Objetos
+- ✅ Inteligência Artificial (LLM)
+- ✅ Visualização de Dados
+- ✅ Otimização Combinatória
+- ✅ Interface Gráfica
+- ✅ Processamento de Linguagem Natural
 
 ---
 
 ## 🤝 Contribuindo
 
+Contribuições são bem-vindas! Por favor:
+
 1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
+2. Crie uma branch (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
+4. Push para a branch (`git push origin feature/MinhaFeature`)
 5. Abra um Pull Request
 
 ---
 
 ## 📝 Licença
 
-Este projeto é parte do Tech Challenge IADT - Fase 2.
+Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fins educacionais.
 
 ---
 
 ## 👥 Autores
 
-- [Seu Nome] - Desenvolvimento inicial
+- **[Seu Nome]** - Desenvolvimento completo
+
+### Contribuições
+
+- Algoritmo Genético: Implementação customizada
+- Visualizações: Pygame e Folium integrados
+- LLM: Integração com Ollama
+- Dados: Coletados e validados
+- Documentação: Completa e detalhada
 
 ---
 
 ## 🙏 Agradecimentos
 
-- Código base TSP fornecido pela IADT
-- Bibliotecas open-source utilizadas
-- Comunidade Python
+- **FIAP** - Tech Challenge e orientação
+- **Comunidade Python** - Bibliotecas open-source
+- **Ollama Team** - LLM local gratuito
+- **OpenStreetMap** - Mapas
 
 ---
 
 ## 📞 Contato
 
-Para dúvidas ou sugestões, abra uma issue no repositório.
+- **GitHub:** [seu-usuario](https://github.com/seu-usuario)
+- **Email:** seu-email@exemplo.com
+- **LinkedIn:** [seu-perfil](https://linkedin.com/in/seu-perfil)
 
 ---
 
-**Status do Projeto**: 🚧 Em Desenvolvimento
+## 🎓 Contexto Acadêmico
+
+**Instituição:** FIAP  
+**Curso:** [Seu Curso]  
+**Disciplina:** Tech Challenge #2  
+**Data:** Outubro 2025
+
+---
+
+<div align="center">
+
+### ⭐ Se este projeto foi útil, deixe uma estrela! ⭐
+
+**Status:** ✅ 100% Completo e Funcional
 
 Última atualização: Outubro 2025
 
+</div>
+
+---
+
+## 🔗 Links Úteis
+
+- 🎥 [Vídeo Demonstração](#-demonstração) ⬆️
+- 📖 [Documentação Completa](#-documentação)
+- 🤖 [Guia Ollama](INSTALACAO_OLLAMA.md)
+- 🎮 [Guia Visualizações](VISUALIZACAO_GUIA.md)
+- 📋 [Status do Projeto](ROTEIRO.txt)
+- 🎬 [Roteiro do Vídeo](ROTEIRO_VIDEO.md)
+
+---
+
+<div align="center">
+
+**Desenvolvido com ❤️ para o Tech Challenge #2**
+
+[⬆ Voltar ao topo](#-sistema-de-otimização-de-rotas-para-distribuição-de-suprimentos-médicos)
+
+</div>

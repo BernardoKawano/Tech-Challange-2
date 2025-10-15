@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_6122eefbdf86923b5f3101a14c4f5fc1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-ant-path@1.1.2/dist/leaflet-ant-path.min.js"></script>
+</head>
+<body>
+    
+    
+        <div style="
+            position: fixed; 
+            bottom: 50px; 
+            right: 50px; 
+            width: 320px; 
+            background-color: white; 
+            border: 3px solid #666; 
+            border-radius: 8px; 
+            padding: 15px; 
+            font-family: Arial, sans-serif;
+            font-size: 13px; 
+            z-index: 9999;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.4);
+        ">
+            <h3 style="margin-top: 0; margin-bottom: 10px; color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px;">
+                📊 LEGENDA DO MAPA
+            </h3>
+            
+            <div style="margin-bottom: 12px;">
+                <h4 style="margin: 5px 0; font-size: 13px; color: #555;">🎯 Prioridades (15 pontos):</h4>
+                <p style="margin: 3px 0; line-height: 1.6;">
+                    <span style="color: red; font-weight: bold;">🔴 Crítico</span> | 
+                    <span style="color: orange; font-weight: bold;">🟠 Alto</span><br>
+                    <span style="color: #6495ED; font-weight: bold;">🟡 Médio</span> | 
+                    <span style="color: green; font-weight: bold;">🟢 Baixo</span>
+                </p>
+            </div>
+            
+            <hr style="margin: 10px 0; border: 1px solid #ddd;">
+            
+            <div style="margin-bottom: 12px;">
+                <h4 style="margin: 5px 0; font-size: 13px; color: #555;">🚐 Veículos (3 rotas):</h4>
+        
+                <p style="margin: 3px 0; line-height: 1.5;">
+                    <span style="display: inline-block; width: 30px; height: 3px; background-color: #FF6464; vertical-align: middle;"></span>
+                    <span style="font-weight: bold; color: #FF6464;"> Veículo 1</span>
+                </p>
+            
+                <p style="margin: 3px 0; line-height: 1.5;">
+                    <span style="display: inline-block; width: 30px; height: 3px; background-color: #6496FF; vertical-align: middle;"></span>
+                    <span style="font-weight: bold; color: #6496FF;"> Veículo 2</span>
+                </p>
+            
+                <p style="margin: 3px 0; line-height: 1.5;">
+                    <span style="display: inline-block; width: 30px; height: 3px; background-color: #64C864; vertical-align: middle;"></span>
+                    <span style="font-weight: bold; color: #64C864;"> Veículo 3</span>
+                </p>
+            
+            </div>
+            
+            <hr style="margin: 10px 0; border: 1px solid #ddd;">
+            
+            <div style="margin-bottom: 5px;">
+                <h4 style="margin: 5px 0; font-size: 13px; color: #555;">📍 Símbolos:</h4>
+                <p style="margin: 3px 0; font-size: 12px; line-height: 1.6;">
+                    🏠 = Depósito Central<br>
+                    📍 = Ponto de Entrega<br>
+                    A,B,C... = Identificação dos pontos<br>
+                    → = Direção da rota (animada)
+                </p>
+            </div>
+            
+            <hr style="margin: 10px 0; border: 1px solid #ddd;">
+            
+            <p style="margin: 5px 0; font-size: 11px; color: #999; text-align: center;">
+                💡 Clique nos marcadores para ver detalhes<br>
+                Use os botões + e - para zoom
+            </p>
+        </div>
+        
+    
+            <div class="folium-map" id="map_6122eefbdf86923b5f3101a14c4f5fc1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_6122eefbdf86923b5f3101a14c4f5fc1 = L.map(
+                "map_6122eefbdf86923b5f3101a14c4f5fc1",
+                {
+                    center: [-23.55052, -46.633308],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_6d5de53d4cae601cbe5b4c528b5ef21e = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_6d5de53d4cae601cbe5b4c528b5ef21e.addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var tile_layer_60dd18cacbf7c71280dffc5c6e172ebe = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detect_retina": false, "max_native_zoom": 19, "max_zoom": 19, "min_zoom": 0, "no_wrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+            var mini_map_280c877760e8f5245dc17aa623deab45 = new L.Control.MiniMap(
+                tile_layer_60dd18cacbf7c71280dffc5c6e172ebe,
+                {
+  "position": "bottomright",
+  "width": 150,
+  "height": 150,
+  "collapsedWidth": 25,
+  "collapsedHeight": 25,
+  "zoomLevelOffset": -5,
+  "centerFixed": false,
+  "zoomAnimation": false,
+  "toggleDisplay": false,
+  "autoToggleDisplay": false,
+  "minimized": false,
+}
+            );
+            map_6122eefbdf86923b5f3101a14c4f5fc1.addControl(mini_map_280c877760e8f5245dc17aa623deab45);
+        
+    
+            var marker_46c9d33fd48bfef214bb5f4d461250ba = L.marker(
+                [-23.55052, -46.633308],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_4f606ae9a54c7483e1a6bea027e97d61 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "black",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1d1276c2ba66dbd60800b2550c0b4035 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_8dc4792f0535a87283b02e0da87d9fa7 = $(`<div id="html_8dc4792f0535a87283b02e0da87d9fa7" style="width: 100.0%; height: 100.0%;"><div style="font-family: Arial; width: 220px;"><h3 style="margin: 0; color: #333;">🏠 DEPÓSITO CENTRAL</h3><hr style="margin: 5px 0; border: 1px solid #ddd;"><p style="margin: 5px 0;"><b>Hospital Central</b></p><p style="margin: 5px 0; font-size: 12px; color: #666;">Ponto de partida e retorno de todos os veículos</p><p style="margin: 5px 0; font-size: 11px; color: #999;">Coordenadas: -23.5505, -46.6333</p></div></div>`)[0];
+                popup_1d1276c2ba66dbd60800b2550c0b4035.setContent(html_8dc4792f0535a87283b02e0da87d9fa7);
+            
+        
+
+        marker_46c9d33fd48bfef214bb5f4d461250ba.bindPopup(popup_1d1276c2ba66dbd60800b2550c0b4035)
+        ;
+
+        
+    
+    
+            marker_46c9d33fd48bfef214bb5f4d461250ba.bindTooltip(
+                `<div>
+                     🏠 Depósito Central - Clique para detalhes
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_46c9d33fd48bfef214bb5f4d461250ba.setIcon(icon_4f606ae9a54c7483e1a6bea027e97d61);
+            
+    
+            var circle_af2a595d2399a900ce9ffbf8726e2fb3 = L.circle(
+                [-23.55052, -46.633308],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "gray", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500, "stroke": true, "weight": 3}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+        var popup_0356c7fe629070fce5a93f3b52dc716f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f2278dbadd0b826523102baae1ca814e = $(`<div id="html_f2278dbadd0b826523102baae1ca814e" style="width: 100.0%; height: 100.0%;">Área do depósito (500m)</div>`)[0];
+                popup_0356c7fe629070fce5a93f3b52dc716f.setContent(html_f2278dbadd0b826523102baae1ca814e);
+            
+        
+
+        circle_af2a595d2399a900ce9ffbf8726e2fb3.bindPopup(popup_0356c7fe629070fce5a93f3b52dc716f)
+        ;
+
+        
+    
+    
+            var poly_line_17d03ffbd3495553485c0ff0f0ee3589 = L.polyline(
+                [[-23.55052, -46.633308], [-23.588, -46.64], [-23.565, -46.652], [-23.595, -46.675], [-23.543, -46.575], [-23.556, -46.596], [-23.55052, -46.633308]],
+                {"bubblingMouseEvents": true, "color": "#FF6464", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF6464", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+        var popup_21168d5e30a86a234195c6242b6b71af = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_b1325137af6e383f2b68231a230b7bb7 = $(`<div id="html_b1325137af6e383f2b68231a230b7bb7" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 200px;">                 <h4 style="margin: 0; color: #FF6464;">Van Refrigerada 01</h4>                 <hr style="margin: 5px 0;">                 <p style="margin: 3px 0;"><b>Entregas:</b> 5</p>                 <p style="margin: 3px 0; font-size: 11px;"><b>Sequência:</b><br>Depósito → A → B → C → D → E → Depósito</p>             </div>             </div>`)[0];
+                popup_21168d5e30a86a234195c6242b6b71af.setContent(html_b1325137af6e383f2b68231a230b7bb7);
+            
+        
+
+        poly_line_17d03ffbd3495553485c0ff0f0ee3589.bindPopup(popup_21168d5e30a86a234195c6242b6b71af)
+        ;
+
+        
+    
+    
+            poly_line_17d03ffbd3495553485c0ff0f0ee3589.bindTooltip(
+                `<div>
+                     Van Refrigerada 01 - 5 entregas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_f3ca3b943772fcfb282ac18eff44664e = L.polyline.antPath(
+              [[-23.55052, -46.633308], [-23.588, -46.64], [-23.565, -46.652], [-23.595, -46.675], [-23.543, -46.575], [-23.556, -46.596], [-23.55052, -46.633308]],
+              {
+  "stroke": true,
+  "color": "#FF6464",
+  "weight": 3,
+  "opacity": 0.6,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+20,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#FF6464",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 1200,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var poly_line_cafd6788cc77fdf2e4ccd7f12d56e440 = L.polyline(
+                [[-23.55052, -46.633308], [-23.528, -46.705], [-23.564, -46.672], [-23.505, -46.625], [-23.585, -46.685], [-23.55052, -46.633308]],
+                {"bubblingMouseEvents": true, "color": "#6496FF", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#6496FF", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+        var popup_698aeb7d0225f37495850bccf2961084 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_c4c9d4965b6e51f4fa1ce0eb58dac832 = $(`<div id="html_c4c9d4965b6e51f4fa1ce0eb58dac832" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 200px;">                 <h4 style="margin: 0; color: #6496FF;">Van Padrão 02</h4>                 <hr style="margin: 5px 0;">                 <p style="margin: 3px 0;"><b>Entregas:</b> 4</p>                 <p style="margin: 3px 0; font-size: 11px;"><b>Sequência:</b><br>Depósito → F → G → H → I → Depósito</p>             </div>             </div>`)[0];
+                popup_698aeb7d0225f37495850bccf2961084.setContent(html_c4c9d4965b6e51f4fa1ce0eb58dac832);
+            
+        
+
+        poly_line_cafd6788cc77fdf2e4ccd7f12d56e440.bindPopup(popup_698aeb7d0225f37495850bccf2961084)
+        ;
+
+        
+    
+    
+            poly_line_cafd6788cc77fdf2e4ccd7f12d56e440.bindTooltip(
+                `<div>
+                     Van Padrão 02 - 4 entregas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_df1e84dbea06df7d458dfe42d803d3e5 = L.polyline.antPath(
+              [[-23.55052, -46.633308], [-23.528, -46.705], [-23.564, -46.672], [-23.505, -46.625], [-23.585, -46.685], [-23.55052, -46.633308]],
+              {
+  "stroke": true,
+  "color": "#6496FF",
+  "weight": 3,
+  "opacity": 0.6,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+20,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#6496FF",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 1200,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var poly_line_ae20d6d6de6db497ea27c574683af5d3 = L.polyline(
+                [[-23.55052, -46.633308], [-23.565, -46.698], [-23.535, -46.542], [-23.545, -46.655], [-23.615, -46.698], [-23.575, -46.645], [-23.562, -46.671], [-23.55052, -46.633308]],
+                {"bubblingMouseEvents": true, "color": "#64C864", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#64C864", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+        var popup_5f9767c0b7edcdd05b0a850ccde55bec = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_8a0a22b1549d1772d4ccfe1841f1b6d1 = $(`<div id="html_8a0a22b1549d1772d4ccfe1841f1b6d1" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 200px;">                 <h4 style="margin: 0; color: #64C864;">Caminhonete 03</h4>                 <hr style="margin: 5px 0;">                 <p style="margin: 3px 0;"><b>Entregas:</b> 6</p>                 <p style="margin: 3px 0; font-size: 11px;"><b>Sequência:</b><br>Depósito → J → K → L → M → N → O → Depósito</p>             </div>             </div>`)[0];
+                popup_5f9767c0b7edcdd05b0a850ccde55bec.setContent(html_8a0a22b1549d1772d4ccfe1841f1b6d1);
+            
+        
+
+        poly_line_ae20d6d6de6db497ea27c574683af5d3.bindPopup(popup_5f9767c0b7edcdd05b0a850ccde55bec)
+        ;
+
+        
+    
+    
+            poly_line_ae20d6d6de6db497ea27c574683af5d3.bindTooltip(
+                `<div>
+                     Caminhonete 03 - 6 entregas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_86583ae6de876b5802422bca2f322403 = L.polyline.antPath(
+              [[-23.55052, -46.633308], [-23.565, -46.698], [-23.535, -46.542], [-23.545, -46.655], [-23.615, -46.698], [-23.575, -46.645], [-23.562, -46.671], [-23.55052, -46.633308]],
+              {
+  "stroke": true,
+  "color": "#64C864",
+  "weight": 3,
+  "opacity": 0.6,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+20,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#64C864",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 1200,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var marker_bd10d354ce3c9735c7af114c474d1042 = L.marker(
+                [-23.588, -46.64],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_2ed5fde831dc147df284760bb6cfe5ea = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_36e47a64bdfa9c7d8078e2d101078a59 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2805d84157daa014f243e8e6b2c5c505 = $(`<div id="html_2805d84157daa014f243e8e6b2c5c505" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ UBS Vila Mariana                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">critico</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5880, -46.6400                 </p>             </div>             </div>`)[0];
+                popup_36e47a64bdfa9c7d8078e2d101078a59.setContent(html_2805d84157daa014f243e8e6b2c5c505);
+            
+        
+
+        marker_bd10d354ce3c9735c7af114c474d1042.bindPopup(popup_36e47a64bdfa9c7d8078e2d101078a59)
+        ;
+
+        
+    
+    
+            marker_bd10d354ce3c9735c7af114c474d1042.bindTooltip(
+                `<div>
+                     A - UBS Vila Mariana (critico)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bd10d354ce3c9735c7af114c474d1042.setIcon(icon_2ed5fde831dc147df284760bb6cfe5ea);
+            
+    
+            var marker_f9a9b41cb6470088fbd350ebbaf19d4e = L.marker(
+                [-23.588, -46.64],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_efbabe40aa194f9079328a853fc78dc8 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        A\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_f9a9b41cb6470088fbd350ebbaf19d4e.setIcon(div_icon_efbabe40aa194f9079328a853fc78dc8);
+            
+    
+            var marker_ef7f5b3d2f8e8210d9a919e7bced2dbd = L.marker(
+                [-23.565, -46.652],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_a86282ea43699e4132b2d4dea63b2d92 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d7114249e60ab5c9d898ca792eace4d1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3680b07815b048e3b549e7a2edaf9b8c = $(`<div id="html_3680b07815b048e3b549e7a2edaf9b8c" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Clínica Santa Cruz                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">alto</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5650, -46.6520                 </p>             </div>             </div>`)[0];
+                popup_d7114249e60ab5c9d898ca792eace4d1.setContent(html_3680b07815b048e3b549e7a2edaf9b8c);
+            
+        
+
+        marker_ef7f5b3d2f8e8210d9a919e7bced2dbd.bindPopup(popup_d7114249e60ab5c9d898ca792eace4d1)
+        ;
+
+        
+    
+    
+            marker_ef7f5b3d2f8e8210d9a919e7bced2dbd.bindTooltip(
+                `<div>
+                     B - Clínica Santa Cruz (alto)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ef7f5b3d2f8e8210d9a919e7bced2dbd.setIcon(icon_a86282ea43699e4132b2d4dea63b2d92);
+            
+    
+            var marker_ad1c472817f413887295caab22da0abd = L.marker(
+                [-23.565, -46.652],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_836d904be27460e5ec4b37b942f4a6a9 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        B\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_ad1c472817f413887295caab22da0abd.setIcon(div_icon_836d904be27460e5ec4b37b942f4a6a9);
+            
+    
+            var marker_ac6943a6fd0014a652d9c8529012006e = L.marker(
+                [-23.595, -46.675],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_6074fba9b770f68361038e7a974b6dcf = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5f29cb80f2edab16ab7daddd9babee00 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ae05a6b09c7e2117efbb8f588c9303c5 = $(`<div id="html_ae05a6b09c7e2117efbb8f588c9303c5" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Hospital São Camilo                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">critico</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5950, -46.6750                 </p>             </div>             </div>`)[0];
+                popup_5f29cb80f2edab16ab7daddd9babee00.setContent(html_ae05a6b09c7e2117efbb8f588c9303c5);
+            
+        
+
+        marker_ac6943a6fd0014a652d9c8529012006e.bindPopup(popup_5f29cb80f2edab16ab7daddd9babee00)
+        ;
+
+        
+    
+    
+            marker_ac6943a6fd0014a652d9c8529012006e.bindTooltip(
+                `<div>
+                     C - Hospital São Camilo (critico)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ac6943a6fd0014a652d9c8529012006e.setIcon(icon_6074fba9b770f68361038e7a974b6dcf);
+            
+    
+            var marker_b84b9a3b66132b75c287363207b919d2 = L.marker(
+                [-23.595, -46.675],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_5aac9e7b1608ea3f914bd48f8a0d1560 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        C\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_b84b9a3b66132b75c287363207b919d2.setIcon(div_icon_5aac9e7b1608ea3f914bd48f8a0d1560);
+            
+    
+            var marker_07c6cd80ebd91f61b0005681e9db9df3 = L.marker(
+                [-23.543, -46.575],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_b08ed0e6a0ccd218729ebbdadc433301 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fa743d3851a69f86635756178faff956 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_75fb3a46fd0c09b646dbb71f14fb6e64 = $(`<div id="html_75fb3a46fd0c09b646dbb71f14fb6e64" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Farmácia Popular Tatuapé                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">medio</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5430, -46.5750                 </p>             </div>             </div>`)[0];
+                popup_fa743d3851a69f86635756178faff956.setContent(html_75fb3a46fd0c09b646dbb71f14fb6e64);
+            
+        
+
+        marker_07c6cd80ebd91f61b0005681e9db9df3.bindPopup(popup_fa743d3851a69f86635756178faff956)
+        ;
+
+        
+    
+    
+            marker_07c6cd80ebd91f61b0005681e9db9df3.bindTooltip(
+                `<div>
+                     D - Farmácia Popular Tatuapé (medio)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_07c6cd80ebd91f61b0005681e9db9df3.setIcon(icon_b08ed0e6a0ccd218729ebbdadc433301);
+            
+    
+            var marker_31ab082198cb4d4f04bc48565cce213b = L.marker(
+                [-23.543, -46.575],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_036db5d7427725f64853085b8376e00a = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        D\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_31ab082198cb4d4f04bc48565cce213b.setIcon(div_icon_036db5d7427725f64853085b8376e00a);
+            
+    
+            var marker_93ddd0fec809e9fb2f7dcd7d1daa1762 = L.marker(
+                [-23.556, -46.596],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_105cc87905438e28792365dcac628234 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6ceef88aa8edee67bce0b3c88e87dfd6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1cef5418593dcbd5f2ac7cb8a10b0682 = $(`<div id="html_1cef5418593dcbd5f2ac7cb8a10b0682" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Centro de Saúde Mooca                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">alto</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5560, -46.5960                 </p>             </div>             </div>`)[0];
+                popup_6ceef88aa8edee67bce0b3c88e87dfd6.setContent(html_1cef5418593dcbd5f2ac7cb8a10b0682);
+            
+        
+
+        marker_93ddd0fec809e9fb2f7dcd7d1daa1762.bindPopup(popup_6ceef88aa8edee67bce0b3c88e87dfd6)
+        ;
+
+        
+    
+    
+            marker_93ddd0fec809e9fb2f7dcd7d1daa1762.bindTooltip(
+                `<div>
+                     E - Centro de Saúde Mooca (alto)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_93ddd0fec809e9fb2f7dcd7d1daa1762.setIcon(icon_105cc87905438e28792365dcac628234);
+            
+    
+            var marker_4e29989e6163d367794ae8c1a574b64a = L.marker(
+                [-23.556, -46.596],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_997718903ae21210e5ebfb05c3701e6a = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        E\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_4e29989e6163d367794ae8c1a574b64a.setIcon(div_icon_997718903ae21210e5ebfb05c3701e6a);
+            
+    
+            var marker_bcb76212e62b01dc88f9824f19f6bfa2 = L.marker(
+                [-23.528, -46.705],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_bfd60533e2cf2b3dee8fa61702a04cb0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0bf7784d3ea02b2c744308ef9a2c9438 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_da4217d9cb31237d04355240e529defb = $(`<div id="html_da4217d9cb31237d04355240e529defb" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Pronto Socorro Lapa                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">medio</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5280, -46.7050                 </p>             </div>             </div>`)[0];
+                popup_0bf7784d3ea02b2c744308ef9a2c9438.setContent(html_da4217d9cb31237d04355240e529defb);
+            
+        
+
+        marker_bcb76212e62b01dc88f9824f19f6bfa2.bindPopup(popup_0bf7784d3ea02b2c744308ef9a2c9438)
+        ;
+
+        
+    
+    
+            marker_bcb76212e62b01dc88f9824f19f6bfa2.bindTooltip(
+                `<div>
+                     F - Pronto Socorro Lapa (medio)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bcb76212e62b01dc88f9824f19f6bfa2.setIcon(icon_bfd60533e2cf2b3dee8fa61702a04cb0);
+            
+    
+            var marker_3babd39beb5b06de346f912c11c6b554 = L.marker(
+                [-23.528, -46.705],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_3696856143faf2128eb8cd2d60de19a8 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        F\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_3babd39beb5b06de346f912c11c6b554.setIcon(div_icon_3696856143faf2128eb8cd2d60de19a8);
+            
+    
+            var marker_16af49b959e6526185b27ef062cb4886 = L.marker(
+                [-23.564, -46.672],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_7840d155a864a672e477366f05fd8fb0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ade20ef204b6ba129ca9cccafd1cc5ce = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e2a942eabc324f467cf6d72005918de2 = $(`<div id="html_e2a942eabc324f467cf6d72005918de2" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Casa de Repouso Jardins                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">baixo</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5640, -46.6720                 </p>             </div>             </div>`)[0];
+                popup_ade20ef204b6ba129ca9cccafd1cc5ce.setContent(html_e2a942eabc324f467cf6d72005918de2);
+            
+        
+
+        marker_16af49b959e6526185b27ef062cb4886.bindPopup(popup_ade20ef204b6ba129ca9cccafd1cc5ce)
+        ;
+
+        
+    
+    
+            marker_16af49b959e6526185b27ef062cb4886.bindTooltip(
+                `<div>
+                     G - Casa de Repouso Jardins (baixo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_16af49b959e6526185b27ef062cb4886.setIcon(icon_7840d155a864a672e477366f05fd8fb0);
+            
+    
+            var marker_743c8fe753f6ce3c6b9991653c5b4072 = L.marker(
+                [-23.564, -46.672],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_cec4d89bcec01f6dd77b64aadb1fd801 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        G\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_743c8fe753f6ce3c6b9991653c5b4072.setIcon(div_icon_cec4d89bcec01f6dd77b64aadb1fd801);
+            
+    
+            var marker_1964c8626c2fd5a4f6b437936bced86f = L.marker(
+                [-23.505, -46.625],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_b2df836eb614cf059747c9b58d9660fe = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5df60dcb8d598ef80064d32117dd4517 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_214cab4f8ff727005541e2cf37626e78 = $(`<div id="html_214cab4f8ff727005541e2cf37626e78" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Clínica Ortopédica Santana                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">medio</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5050, -46.6250                 </p>             </div>             </div>`)[0];
+                popup_5df60dcb8d598ef80064d32117dd4517.setContent(html_214cab4f8ff727005541e2cf37626e78);
+            
+        
+
+        marker_1964c8626c2fd5a4f6b437936bced86f.bindPopup(popup_5df60dcb8d598ef80064d32117dd4517)
+        ;
+
+        
+    
+    
+            marker_1964c8626c2fd5a4f6b437936bced86f.bindTooltip(
+                `<div>
+                     H - Clínica Ortopédica Santana (medio)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1964c8626c2fd5a4f6b437936bced86f.setIcon(icon_b2df836eb614cf059747c9b58d9660fe);
+            
+    
+            var marker_b4b14079110b70d6cc260af2acb8958f = L.marker(
+                [-23.505, -46.625],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_df8bda0e8e285d4dae8b4acfacbc86d5 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        H\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_b4b14079110b70d6cc260af2acb8958f.setIcon(div_icon_df8bda0e8e285d4dae8b4acfacbc86d5);
+            
+    
+            var marker_9f0d29e99c795e6d252edc05d9f220bd = L.marker(
+                [-23.585, -46.685],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_582debbffb1f0794ab653aa403097c5a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1b4d04790a51f0744839f786be4b5063 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_47678ece6184e9a7ca594f1a1a33efed = $(`<div id="html_47678ece6184e9a7ca594f1a1a33efed" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Hospital Maternidade Itaim                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">critico</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5850, -46.6850                 </p>             </div>             </div>`)[0];
+                popup_1b4d04790a51f0744839f786be4b5063.setContent(html_47678ece6184e9a7ca594f1a1a33efed);
+            
+        
+
+        marker_9f0d29e99c795e6d252edc05d9f220bd.bindPopup(popup_1b4d04790a51f0744839f786be4b5063)
+        ;
+
+        
+    
+    
+            marker_9f0d29e99c795e6d252edc05d9f220bd.bindTooltip(
+                `<div>
+                     I - Hospital Maternidade Itaim (critico)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9f0d29e99c795e6d252edc05d9f220bd.setIcon(icon_582debbffb1f0794ab653aa403097c5a);
+            
+    
+            var marker_18bc5acd01ef882e07de57f4b2061119 = L.marker(
+                [-23.585, -46.685],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_6dbcda8903cddf4e761792cdc1b2e4a0 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        I\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_18bc5acd01ef882e07de57f4b2061119.setIcon(div_icon_6dbcda8903cddf4e761792cdc1b2e4a0);
+            
+    
+            var marker_abd2c07e6a6f13729ae1cbd3e99069a5 = L.marker(
+                [-23.565, -46.698],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_fc0c9649e82d4857a908b6eee033e9cf = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4b04dde1e904bf7df7b42771b9df084e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_57718a9364da5952076b937c3ca10acd = $(`<div id="html_57718a9364da5952076b937c3ca10acd" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Centro Médico Pinheiros                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">baixo</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5650, -46.6980                 </p>             </div>             </div>`)[0];
+                popup_4b04dde1e904bf7df7b42771b9df084e.setContent(html_57718a9364da5952076b937c3ca10acd);
+            
+        
+
+        marker_abd2c07e6a6f13729ae1cbd3e99069a5.bindPopup(popup_4b04dde1e904bf7df7b42771b9df084e)
+        ;
+
+        
+    
+    
+            marker_abd2c07e6a6f13729ae1cbd3e99069a5.bindTooltip(
+                `<div>
+                     J - Centro Médico Pinheiros (baixo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_abd2c07e6a6f13729ae1cbd3e99069a5.setIcon(icon_fc0c9649e82d4857a908b6eee033e9cf);
+            
+    
+            var marker_038c2be756c2ab466fb8cb5b668690c0 = L.marker(
+                [-23.565, -46.698],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_35baa59fb905738cbae7c8f9b8d01548 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        J\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_038c2be756c2ab466fb8cb5b668690c0.setIcon(div_icon_35baa59fb905738cbae7c8f9b8d01548);
+            
+    
+            var marker_b3d889f2153b4a7b5950be5a70d322cb = L.marker(
+                [-23.535, -46.542],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_e27830b53ea5c5d7acaa6d38236ff3c8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dd92f63d1d3fecd6c219c441b28b82a3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8e8f537606df40781ee59eda3a2a9be4 = $(`<div id="html_8e8f537606df40781ee59eda3a2a9be4" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ UPA Penha                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">alto</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5350, -46.5420                 </p>             </div>             </div>`)[0];
+                popup_dd92f63d1d3fecd6c219c441b28b82a3.setContent(html_8e8f537606df40781ee59eda3a2a9be4);
+            
+        
+
+        marker_b3d889f2153b4a7b5950be5a70d322cb.bindPopup(popup_dd92f63d1d3fecd6c219c441b28b82a3)
+        ;
+
+        
+    
+    
+            marker_b3d889f2153b4a7b5950be5a70d322cb.bindTooltip(
+                `<div>
+                     K - UPA Penha (alto)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b3d889f2153b4a7b5950be5a70d322cb.setIcon(icon_e27830b53ea5c5d7acaa6d38236ff3c8);
+            
+    
+            var marker_1e47f4a79208ace6aa7d544807463d04 = L.marker(
+                [-23.535, -46.542],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_13e9dfcfe4fc4cb51834082551c5ba76 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        K\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_1e47f4a79208ace6aa7d544807463d04.setIcon(div_icon_13e9dfcfe4fc4cb51834082551c5ba76);
+            
+    
+            var marker_931efd8a8ee5ef9ed161b0d59370f9c3 = L.marker(
+                [-23.545, -46.655],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_57cf588c000300089e5764b1d50e0268 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8c9c5bee670991bf7d3545cc0f8eb8c5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d1bd2fe1ed15e8c9d456d01c828760d8 = $(`<div id="html_d1bd2fe1ed15e8c9d456d01c828760d8" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Consultório Dermatológico Higienópolis                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">baixo</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5450, -46.6550                 </p>             </div>             </div>`)[0];
+                popup_8c9c5bee670991bf7d3545cc0f8eb8c5.setContent(html_d1bd2fe1ed15e8c9d456d01c828760d8);
+            
+        
+
+        marker_931efd8a8ee5ef9ed161b0d59370f9c3.bindPopup(popup_8c9c5bee670991bf7d3545cc0f8eb8c5)
+        ;
+
+        
+    
+    
+            marker_931efd8a8ee5ef9ed161b0d59370f9c3.bindTooltip(
+                `<div>
+                     L - Consultório Dermatológico Higienópolis (baixo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_931efd8a8ee5ef9ed161b0d59370f9c3.setIcon(icon_57cf588c000300089e5764b1d50e0268);
+            
+    
+            var marker_627d4234111bd89266d5c0300e3fa1bd = L.marker(
+                [-23.545, -46.655],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_08c2cedd177edfb92057ed7912f02e3c = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        L\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_627d4234111bd89266d5c0300e3fa1bd.setIcon(div_icon_08c2cedd177edfb92057ed7912f02e3c);
+            
+    
+            var marker_d480cee9d00bf9edd8c3ce5f79552771 = L.marker(
+                [-23.615, -46.698],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_cba888f2e8da3e4f861ee201934f3e8b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5a34321d01527db888eb21cf7ca159ca = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_eb35f0af4d0d5d88f294095aee8e46a7 = $(`<div id="html_eb35f0af4d0d5d88f294095aee8e46a7" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Home Care - Paciente Sr. Silva                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">alto</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.6150, -46.6980                 </p>             </div>             </div>`)[0];
+                popup_5a34321d01527db888eb21cf7ca159ca.setContent(html_eb35f0af4d0d5d88f294095aee8e46a7);
+            
+        
+
+        marker_d480cee9d00bf9edd8c3ce5f79552771.bindPopup(popup_5a34321d01527db888eb21cf7ca159ca)
+        ;
+
+        
+    
+    
+            marker_d480cee9d00bf9edd8c3ce5f79552771.bindTooltip(
+                `<div>
+                     M - Home Care - Paciente Sr. Silva (alto)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d480cee9d00bf9edd8c3ce5f79552771.setIcon(icon_cba888f2e8da3e4f861ee201934f3e8b);
+            
+    
+            var marker_ed8ea9541e84978994355b8af9f12859 = L.marker(
+                [-23.615, -46.698],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_b58b022225517141cbf6674e568a1505 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        M\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_ed8ea9541e84978994355b8af9f12859.setIcon(div_icon_b58b022225517141cbf6674e568a1505);
+            
+    
+            var marker_91de31359e3e002a517cc6fa27170a65 = L.marker(
+                [-23.575, -46.645],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_ef73dd4f1c6ca6616b378eb7fc71fb8f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c09870a402cff2e636c059cceb78252d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d542f7ce5c3e5af725fda2ac56410dcc = $(`<div id="html_d542f7ce5c3e5af725fda2ac56410dcc" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Centro de Hemodiálise Saúde                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">critico</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5750, -46.6450                 </p>             </div>             </div>`)[0];
+                popup_c09870a402cff2e636c059cceb78252d.setContent(html_d542f7ce5c3e5af725fda2ac56410dcc);
+            
+        
+
+        marker_91de31359e3e002a517cc6fa27170a65.bindPopup(popup_c09870a402cff2e636c059cceb78252d)
+        ;
+
+        
+    
+    
+            marker_91de31359e3e002a517cc6fa27170a65.bindTooltip(
+                `<div>
+                     N - Centro de Hemodiálise Saúde (critico)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_91de31359e3e002a517cc6fa27170a65.setIcon(icon_ef73dd4f1c6ca6616b378eb7fc71fb8f);
+            
+    
+            var marker_a02b1ca01e67de24614673d9e68cb603 = L.marker(
+                [-23.575, -46.645],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_5fbf01b657dbb5d03f8b35fb9837f837 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        N\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_a02b1ca01e67de24614673d9e68cb603.setIcon(div_icon_5fbf01b657dbb5d03f8b35fb9837f837);
+            
+    
+            var marker_93f80b9a7d0468d29c2b1c7da528799e = L.marker(
+                [-23.562, -46.671],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var icon_dfd9108189d66b974766df8abcc3763b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ea4dc8f6548c74b921a38358a5fdb751 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_76d90a83b98a017c8cd72b12d35b7a4e = $(`<div id="html_76d90a83b98a017c8cd72b12d35b7a4e" style="width: 100.0%; height: 100.0%;">             <div style="font-family: Arial; width: 260px;">                 <h3 style="margin: 0; color: #333; font-size: 16px;">                     ⚪ Clínica Cardiológica InCor                 </h3>                 <hr style="margin: 5px 0; border: 1px solid #ddd;">                                  <table style="width: 100%; font-size: 13px; border-collapse: collapse;">                     <tr>                         <td style="padding: 3px 5px; font-weight: bold; width: 40%;">Prioridade:</td>                         <td style="padding: 3px 5px;">medio</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Carga:</td>                         <td style="padding: 3px 5px;">N/A kg</td>                     </tr>                     <tr>                         <td style="padding: 3px 5px; font-weight: bold;">Volume:</td>                         <td style="padding: 3px 5px;">N/A m³</td>                     </tr>                     <tr style="background-color: #f5f5f5;">                         <td style="padding: 3px 5px; font-weight: bold;">Tempo Serviço:</td>                         <td style="padding: 3px 5px;">N/A min</td>                     </tr>                 </table>                                  <p style="margin: 8px 0 5px 0; font-size: 12px; color: #666; line-height: 1.4;">                     Sem descrição disponível                 </p>                                  <p style="margin: 5px 0 0 0; font-size: 10px; color: #999;">                     Coordenadas: -23.5620, -46.6710                 </p>             </div>             </div>`)[0];
+                popup_ea4dc8f6548c74b921a38358a5fdb751.setContent(html_76d90a83b98a017c8cd72b12d35b7a4e);
+            
+        
+
+        marker_93f80b9a7d0468d29c2b1c7da528799e.bindPopup(popup_ea4dc8f6548c74b921a38358a5fdb751)
+        ;
+
+        
+    
+    
+            marker_93f80b9a7d0468d29c2b1c7da528799e.bindTooltip(
+                `<div>
+                     O - Clínica Cardiológica InCor (medio)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_93f80b9a7d0468d29c2b1c7da528799e.setIcon(icon_dfd9108189d66b974766df8abcc3763b);
+            
+    
+            var marker_69368ca7c64651665fe88910a8f6296a = L.marker(
+                [-23.562, -46.671],
+                {
+}
+            ).addTo(map_6122eefbdf86923b5f3101a14c4f5fc1);
+        
+    
+            var div_icon_158770cab26331fdf2c86a9ba5430f85 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"\n                        font-size: 14px;\n                        font-weight: bold;\n                        color: white;\n                        text-align: center;\n                        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;\n                        margin-top: -40px;\n                        margin-left: 5px;\n                    \"\u003e\n                        O\n                    \u003c/div\u003e\n                    ",
+  "className": "empty",
+});
+        
+    
+                marker_69368ca7c64651665fe88910a8f6296a.setIcon(div_icon_158770cab26331fdf2c86a9ba5430f85);
+            
+</script>
+</html>

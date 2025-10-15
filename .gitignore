@@ -1,12 +1,23 @@
 # ==========================================
 # .gitignore - Projeto Otimização de Rotas
 # ==========================================
+# 
+# 🎓 OTIMIZADO PARA AVALIAÇÃO ACADÊMICA
+# Este arquivo foi configurado para que o professor possa:
+# - Clonar o repositório e ver exemplos de resultados
+# - Executar o código sem conflitos
+# - Avaliar os outputs gerados (mapas, instruções, relatórios)
+#
+# ==========================================
 
-# Python
+# ==========================================
+# 1. PYTHON - Arquivos de compilação
+# ==========================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
 .Python
 build/
 develop-eggs/
@@ -27,26 +38,41 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual Environment
+# ==========================================
+# 2. AMBIENTE VIRTUAL (CRÍTICO!)
+# ==========================================
+# O ambiente virtual NÃO deve ser commitado
+# O professor deve criar o próprio usando:
+# python -m venv venv && pip install -r requirements.txt
 venv/
+.venv/
 env/
 ENV/
 env.bak/
 venv.bak/
 
-# IDEs
+# ==========================================
+# 3. IDEs - Configurações pessoais
+# ==========================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
+*.code-workspace
+.spyproject
+.ropeproject
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# ==========================================
+# 4. JUPYTER NOTEBOOK
+# ==========================================
+.ipynb_checkpoints/
 *.ipynb_checkpoints/
 
-# Testing
+# ==========================================
+# 5. TESTES E COVERAGE
+# ==========================================
 .pytest_cache/
 .coverage
 htmlcov/
@@ -56,79 +82,109 @@ coverage.xml
 *.cover
 .hypothesis/
 
-# MyPy
+# ==========================================
+# 6. TYPE CHECKING
+# ==========================================
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Configurações Locais
+# ==========================================
+# 7. CONFIGURAÇÕES LOCAIS E SENSÍVEIS
+# ==========================================
+# Configurações pessoais (use config.example.json)
 config/config.json
 .env
 *.env
 
-# API Keys
+# API Keys e Credenciais
 *.key
 *.pem
 secrets/
 
-# Dados Sensíveis
+# Dados sensíveis reais
 data/real_addresses.json
 data/sensitive/
 
-# Logs
-logs/
+# ==========================================
+# 8. LOGS - Mantém alguns para demonstração
+# ==========================================
+# IMPORTANTE: Mantemos alguns logs de exemplo
+# mas ignoramos logs excessivos de execuções locais
+logs/genetic/*.jsonl
+logs/genetic/*.txt
+# Mantém: logs/genetic/*.json (resumos importantes)
 *.log
 
-# Outputs
-outputs/
-results/
+# ==========================================
+# 9. OUTPUTS - Mantém exemplos para avaliação
+# ==========================================
+# IMPORTANTE PARA CORREÇÃO:
+# - Os outputs de exemplo SÃO commitados
+# - O professor pode ver resultados sem executar
+# - Apenas outputs temporários são ignorados
+
+# Mantém outputs de exemplo mas ignora execuções locais excessivas
+# Estratégia: Limitar número de arquivos por tipo
+
+# Mapas HTML - mantém até 5 exemplos recentes
+# (remover manualmente os mais antigos se necessário)
+# outputs/maps/ - TODOS commitados para demonstração
+
+# Instruções - mantém todas (são leves)
+# outputs/instructions/ - TODOS commitados
+
+# Relatórios - mantém até 3 mais recentes
+# outputs/reports/ - TODOS commitados
+
+# Outros diretórios temporários
 temp/
 tmp/
+results/
 
-# OS
+# ==========================================
+# 10. SISTEMA OPERACIONAL
+# ==========================================
 Thumbs.db
 desktop.ini
+.DS_Store
 
-# Backup files
+# ==========================================
+# 11. BACKUPS
+# ==========================================
 *.bak
 *.backup
 *~
 
-# Large files
+# ==========================================
+# 12. ARQUIVOS GRANDES
+# ==========================================
+# Planilhas grandes (exceto exemplos)
 *.csv
 *.xlsx
 *.xls
+
+# EXCEÇÃO: Mantém dados de exemplo
 !data/sample_*.json
+!data/sample_*.csv
 
-# PyCharm
-.idea/
-
-# Visual Studio Code
-.vscode/
-*.code-workspace
-
-# Spyder
-.spyproject
-
-# Rope
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# Documentação gerada
+# ==========================================
+# 13. DOCUMENTAÇÃO GERADA
+# ==========================================
 docs/_build/
 docs/_static/
 docs/_templates/
+/site
 
-# Pygame
-*.pyc
-
-# Cache
+# ==========================================
+# 14. CACHE
+# ==========================================
 .cache/
 *.cache
 
-# Compiled files
+# ==========================================
+# 15. ARQUIVOS COMPILADOS E BINÁRIOS
+# ==========================================
 *.com
 *.class
 *.dll
@@ -136,7 +192,9 @@ docs/_templates/
 *.o
 *.so
 
-# Packages
+# ==========================================
+# 16. ARQUIVOS COMPACTADOS
+# ==========================================
 *.7z
 *.dmg
 *.gz
@@ -145,4 +203,25 @@ docs/_templates/
 *.rar
 *.tar
 *.zip
+
+# ==========================================
+# 17. ARQUIVOS PESSOAIS DO DESENVOLVEDOR
+# ==========================================
+# Adicione aqui arquivos específicos que você
+# não quer commitar mas que não afetam a avaliação
+notas_pessoais.txt
+TODO_privado.md
+rascunho*.py
+
+# ==========================================
+# FIM DO .gitignore
+# ==========================================
+# 
+# 📝 NOTA PARA O PROFESSOR:
+# - Os arquivos de exemplo em data/ são commitados
+# - Os outputs de demonstração estão incluídos
+# - Apenas o ambiente virtual e configs pessoais são ignorados
+# - Execute: pip install -r requirements.txt
+# 
+# ==========================================
 

@@ -851,9 +851,53 @@ if __name__ == '__main__':
         # Executar simulação com os parâmetros escolhidos
         run_simulation(num_vehicles, num_points, num_generations)
         
-        # Mensagem final após fechar a simulação
+        # Após fechar Pygame, oferecer sessão de Q&A
+        print("\n" + "="*60)
+        print("SIMULACAO CONCLUIDA!")
+        print("="*60)
+        
+        print("\n💬 Deseja fazer perguntas sobre as rotas otimizadas? (s/n): ", end='')
+        try:
+            choice = input().strip().lower()
+            if choice == 's' or choice == 'sim':
+                print("\n" + "="*60)
+                print("INICIANDO SESSAO DE PERGUNTAS E RESPOSTAS (Q&A)")
+                print("="*60)
+                print("\nCarregando sistema Q&A com os dados da otimizacao...")
+                
+                try:
+                    from src.llm_integration import QASystem, interactive_qa_session
+                    
+                    # Configurar sistema Q&A
+                    qa = QASystem(provider="ollama", model="llama2")
+                    
+                    # Carregar contexto das rotas otimizadas
+                    # (Aqui você precisaria passar os dados da simulação)
+                    # Por enquanto, informamos que precisa executar com dados
+                    print("\n⚠️  NOTA: Esta funcionalidade requer que os dados da")
+                    print("   otimização sejam salvos globalmente.")
+                    print("\n💡 Para testar o sistema Q&A agora, execute:")
+                    print("   python test_qa_system.py")
+                    print("\n   (Pressione ENTER para continuar)")
+                    input()
+                    
+                except ImportError as e:
+                    print(f"\n❌ Erro ao carregar sistema Q&A: {e}")
+                    print("   Certifique-se de que o Ollama está instalado.")
+        
+        except (EOFError, KeyboardInterrupt):
+            print("\n")
+        
+        # Mensagem final
         print("\n" + "="*60)
         print("Execucao finalizada!")
         print("="*60)
+        print("\n📁 Arquivos gerados em:")
+        print("   • outputs/maps/           (mapas HTML)")
+        print("   • outputs/instructions/   (instruções motoristas)")
+        print("   • outputs/reports/        (relatórios gerenciais)")
+        print("\n💡 Para fazer perguntas sobre as rotas, execute:")
+        print("   python test_qa_system.py")
+        print()
     else:
         print("\nConfiguracao cancelada pelo usuario.")
