@@ -558,7 +558,7 @@ Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fi
 ## 🎓 Contexto Acadêmico
 
 **Instituição:** FIAP  
-**Curso:** [Seu Curso]  
+**Curso:** IA para Desenvolvedores
 **Disciplina:** Tech Challenge #2  
 **Data:** Outubro 2025
 
@@ -573,16 +573,6 @@ Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fi
 Última atualização: Outubro 2025
 
 </div>
-
----
-
-## 🔗 Links Úteis
-
-- 🎥 [Vídeo Demonstração](#-demonstração) ⬆️
-- 📖 [Documentação Completa](#-documentação)
-- 🚀 [Início Rápido](#-início-rápido)
-- 🧬 [Algoritmo Genético](#-algoritmo-genético)
-- 🤖 [Integração LLM](#-integração-llm)
 
 ---
 
