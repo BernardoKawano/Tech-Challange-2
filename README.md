@@ -544,15 +544,6 @@ Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fi
 - **Comunidade Python** - Bibliotecas open-source
 - **Ollama Team** - LLM local gratuito
 - **OpenStreetMap** - Mapas
-
----
-
-## 📞 Contato
-
-- **GitHub:** [seu-usuario](https://github.com/seu-usuario)
-- **Email:** seu-email@exemplo.com
-- **LinkedIn:** [seu-perfil](https://linkedin.com/in/seu-perfil)
-
 ---
 
 ## 🎓 Contexto Acadêmico
