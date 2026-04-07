@@ -46,10 +46,21 @@ VEHICLE_COLORS = [
 ]
 
 
+def detect_display_size() -> Tuple[int, int]:
+    """
+    Detecta resolução atual do monitor para adaptar a interface.
+    """
+    pygame.init()
+    info = pygame.display.Info()
+    width = max(1024, info.current_w)
+    height = max(720, info.current_h)
+    return width, height
+
+
 class ConfigScreen:
     """Tela de configuração interativa no Pygame."""
     
-    def __init__(self, width: int = 1920, height: int = 1080):
+    def __init__(self, width: Optional[int] = None, height: Optional[int] = None):
         """
         Inicializa a tela de configuração em TELA CHEIA.
         
@@ -58,11 +69,12 @@ class ConfigScreen:
             height: Altura da janela (padrão Full HD)
         """
         pygame.init()
-        self.width = width
-        self.height = height
+        auto_width, auto_height = detect_display_size()
+        self.width = width or auto_width
+        self.height = height or auto_height
         
-        # Tela cheia ou modo janela maximizada
-        self.screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+        # Janela adaptativa para qualquer resolução
+        self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         pygame.display.set_caption("Configuracao do AG - VRP")
         self.clock = pygame.time.Clock()
         
@@ -80,7 +92,7 @@ class ConfigScreen:
         button_width = 90  # Reduzido de 120
         button_height = 45  # Reduzido de 60
         total_width = 5 * button_width + 4 * 20  # 5 botões + 4 espaços menores
-        start_x = (width - total_width) // 2
+        start_x = (self.width - total_width) // 2
         y_vehicles = 180  # Mais próximo do título
         
         for i in range(5):
@@ -90,7 +102,7 @@ class ConfigScreen:
         # Slider de pontos - MINI
         slider_width = 700  # Reduzido de 900
         slider_height = 20  # Reduzido de 25
-        slider_x = (width - slider_width) // 2
+        slider_x = (self.width - slider_width) // 2
         slider_y = 300  # Mais próximo (era 380)
         self.points_slider_rect = pygame.Rect(slider_x, slider_y, slider_width, slider_height)
         self.points_slider_handle = pygame.Rect(0, 0, 14, 32)  # Reduzido
@@ -103,7 +115,8 @@ class ConfigScreen:
         self.dragging_gens_slider = False
         
         # Botão de iniciar - MENOR (mais acima)
-        self.start_button = pygame.Rect(width // 2 - 150, 720, 300, 55)
+        start_y = min(720, self.height - 120)
+        self.start_button = pygame.Rect(self.width // 2 - 150, start_y, 300, 55)
     
     def update_points_slider_handle_position(self):
         """Atualiza posição do handle do slider de pontos."""
@@ -128,6 +141,9 @@ class ConfigScreen:
             if event.type == pygame.QUIT:
                 self.running = False
                 return
+            elif event.type == pygame.VIDEORESIZE:
+                self.width, self.height = event.w, event.h
+                self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
             
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
@@ -507,9 +523,8 @@ def run_simulation(num_vehicles: int, num_points: int, num_generations: int):
     
     # Inicializar visualização Pygame
     print("\nIniciando visualizacao Pygame...")
-    window_width = 1920
-    window_height = 1080
-    print(f"Janela: {window_width}x{window_height} pixels (Full HD)")
+    window_width, window_height = detect_display_size()
+    print(f"Janela adaptativa detectada: {window_width}x{window_height}")
     
     viz = PygameVisualizer(width=window_width, height=window_height, fps=30)
     
@@ -570,6 +585,7 @@ def run_simulation(num_vehicles: int, num_points: int, num_generations: int):
     print("="*60 + "\n")
     
     # Executar AG com visualização
+    simulation_context = None
     try:
         best_solution = ga.run(generation_callback=update_visualization)
         
@@ -599,6 +615,55 @@ def run_simulation(num_vehicles: int, num_points: int, num_generations: int):
         
         print(f"\nRotas:")
         print(f"  {best_solution.to_string()}")
+
+        # Salvar contexto para chat conversacional em tempo real
+        try:
+            session_dir = project_root / "outputs" / "session"
+            session_dir.mkdir(parents=True, exist_ok=True)
+            session_file = session_dir / "latest_context.json"
+
+            simulation_context = {
+                "routes": details["routes"],
+                "vehicles": [
+                    {
+                        "name": v.name,
+                        "capacity_kg": v.capacity_kg,
+                        "capacity_volume_m3": v.capacity_volume_m3,
+                        "autonomy_km": v.autonomy_km,
+                    }
+                    for v in vehicles
+                ],
+                "delivery_points": [
+                    {
+                        "name": p.name,
+                        "priority": p.priority.name.lower(),
+                        "weight_kg": p.weight_kg,
+                        "volume_m3": p.volume_m3,
+                        "address": getattr(p, "address", "N/A"),
+                    }
+                    for p in points
+                ],
+                "metrics": {
+                    "total_distance": details.get("total_distance_km", 0),
+                    "fitness": details.get("fitness", 0),
+                    "capacity_violations": 0,
+                    "autonomy_violations": 0,
+                    "total_vehicles": len(vehicles),
+                },
+                "ga_stats": {
+                    "total_generations": ga.current_generation,
+                    "total_crossovers": stats.get("total_crossovers", 0),
+                    "total_mutations": stats.get("total_mutations", 0),
+                    "selection_type": stats.get("selection_type", "N/A"),
+                    "crossover_type": stats.get("crossover_type", "N/A"),
+                },
+            }
+
+            with open(session_file, "w", encoding="utf-8") as f:
+                json.dump(simulation_context, f, ensure_ascii=False, indent=2)
+            print(f"\nContexto do chat salvo em: {session_file}")
+        except Exception as context_error:
+            print(f"\nAviso: nao foi possivel salvar contexto do chat: {context_error}")
         
         print(f"\nDetalhes por Veiculo:")
         violations_found = False
@@ -827,63 +892,68 @@ def run_simulation(num_vehicles: int, num_points: int, num_generations: int):
             )
             
             viz.clock.tick(10)  # 10 FPS para economizar recursos
+        return simulation_context
     
     except KeyboardInterrupt:
         print("\n\nExecucao interrompida pelo usuario.")
         viz.close()
+        return simulation_context
     
     except Exception as e:
         print(f"\n\nERRO: {e}")
         import traceback
         traceback.print_exc()
         viz.close()
+        return simulation_context
     
     # NÃO usar finally para não fechar prematuramente
 
 
 if __name__ == '__main__':
-    # Mostrar tela de configuração NO PYGAME EM TELA CHEIA
-    config_screen = ConfigScreen(width=1920, height=1080)  # Full HD
+    # Mostrar tela de configuracao com tamanho adaptado ao monitor
+    config_screen = ConfigScreen()
     result = config_screen.run()
     
     if result:
         num_vehicles, num_points, num_generations = result
         # Executar simulação com os parâmetros escolhidos
-        run_simulation(num_vehicles, num_points, num_generations)
+        simulation_context = run_simulation(num_vehicles, num_points, num_generations)
         
         # Após fechar Pygame, oferecer sessão de Q&A
         print("\n" + "="*60)
         print("SIMULACAO CONCLUIDA!")
         print("="*60)
         
-        print("\n💬 Deseja fazer perguntas sobre as rotas otimizadas? (s/n): ", end='')
+        print("\nDeseja fazer perguntas sobre as rotas otimizadas agora? (s/n): ", end="")
         try:
             choice = input().strip().lower()
-            if choice == 's' or choice == 'sim':
+            if choice in ('s', 'sim'):
                 print("\n" + "="*60)
                 print("INICIANDO SESSAO DE PERGUNTAS E RESPOSTAS (Q&A)")
                 print("="*60)
-                print("\nCarregando sistema Q&A com os dados da otimizacao...")
+                print("\nCarregando chat conversacional com dados da ultima otimizacao...")
                 
                 try:
                     from src.llm_integration import QASystem, interactive_qa_session
                     
                     # Configurar sistema Q&A
                     qa = QASystem(provider="ollama", model="llama2")
-                    
-                    # Carregar contexto das rotas otimizadas
-                    # (Aqui você precisaria passar os dados da simulação)
-                    # Por enquanto, informamos que precisa executar com dados
-                    print("\n⚠️  NOTA: Esta funcionalidade requer que os dados da")
-                    print("   otimização sejam salvos globalmente.")
-                    print("\n💡 Para testar o sistema Q&A agora, execute:")
-                    print("   python test_qa_system.py")
-                    print("\n   (Pressione ENTER para continuar)")
-                    input()
+                    if simulation_context:
+                        qa.load_context(
+                            routes=simulation_context["routes"],
+                            vehicles=simulation_context["vehicles"],
+                            delivery_points=simulation_context["delivery_points"],
+                            metrics=simulation_context["metrics"],
+                            ga_stats=simulation_context.get("ga_stats", {}),
+                        )
+                        interactive_qa_session(qa, stream=True)
+                    else:
+                        print("\nNao foi possivel carregar o contexto da simulacao.")
+                        print("Execute novamente e tente abrir o chat ao final.")
                     
                 except ImportError as e:
-                    print(f"\n❌ Erro ao carregar sistema Q&A: {e}")
-                    print("   Certifique-se de que o Ollama está instalado.")
+                    print(f"\nErro ao carregar sistema Q&A: {e}")
+                    print("Certifique-se de que o pacote ollama e o servidor local estao disponiveis.")
         
         except (EOFError, KeyboardInterrupt):
             print("\n")
@@ -892,12 +962,13 @@ if __name__ == '__main__':
         print("\n" + "="*60)
         print("Execucao finalizada!")
         print("="*60)
-        print("\n📁 Arquivos gerados em:")
+        print("\nArquivos gerados em:")
         print("   • outputs/maps/           (mapas HTML)")
         print("   • outputs/instructions/   (instruções motoristas)")
         print("   • outputs/reports/        (relatórios gerenciais)")
-        print("\n💡 Para fazer perguntas sobre as rotas, execute:")
-        print("   python test_qa_system.py")
+        print("   • outputs/session/        (contexto para chat)")
+        print("\nPara conversar novamente com o Llama em tempo real:")
+        print("   python chat_realtime.py")
         print()
     else:
         print("\nConfiguracao cancelada pelo usuario.")

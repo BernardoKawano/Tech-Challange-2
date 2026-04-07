@@ -88,8 +88,9 @@ class PygameVisualizer:
         self.height = height
         self.fps = fps
         self.plot_x_offset = width // 2  # Metade para mapa, metade para gráfico
+        self.ui_scale = max(0.7, min(self.width / 1920, self.height / 1080))
         
-        self.screen = pygame.display.set_mode((width, height))
+        self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
         pygame.display.set_caption("Otimização de Rotas Médicas - Evolução em Tempo Real")
         self.clock = pygame.time.Clock()
         
@@ -110,6 +111,11 @@ class PygameVisualizer:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            elif event.type == pygame.VIDEORESIZE:
+                self.width, self.height = event.w, event.h
+                self.plot_x_offset = self.width // 2
+                self.ui_scale = max(0.7, min(self.width / 1920, self.height / 1080))
+                self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     self.running = False
@@ -643,14 +649,23 @@ class PygameVisualizer:
                 self.screen.blit(text, (col_x, col_y))
                 col_y += 12  # Reduzido de 14 para 12
     
-    def draw_convergence_plot(self, y_offset: int = 340):
+    def draw_convergence_plot(self, y_offset: int = 340, plot_height: Optional[int] = None):
         """Desenha gráfico de convergência COMPACTO."""
         if not self.fitness_history:
             return
         
         try:
+            if plot_height is None:
+                plot_height = int(self.height * 0.28)
+            plot_height = max(200, plot_height)
+            plot_width = int(self.width * 0.22)
+            plot_width = max(320, plot_width)
+            dpi = 85
+            fig_w = plot_width / dpi
+            fig_h = plot_height / dpi
+
             # Criar figura matplotlib MENOR
-            fig, ax = plt.subplots(figsize=(4.2, 3.2), dpi=85)  # Reduzido de (5,5)
+            fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=dpi)
             ax.plot(self.generation_history, self.fitness_history, 'b-', linewidth=1.5)
             ax.set_xlabel('Geracao', fontsize=9)
             ax.set_ylabel('Fitness', fontsize=9)
@@ -668,7 +683,7 @@ class PygameVisualizer:
             
             # Criar surface do pygame - POSIÇÃO FIXA NO LADO DIREITO
             surf = pygame.image.frombuffer(buf, size, "RGBA")
-            self.screen.blit(surf, (self.plot_x_offset + 10, y_offset))  # Posição controlada
+            self.screen.blit(surf, (self.plot_x_offset + int(10 * self.ui_scale), y_offset))
             
             plt.close(fig)
         except Exception as e:
@@ -743,21 +758,27 @@ class PygameVisualizer:
         
         # ========== LAYOUT ORGANIZADO - SEM SOBREPOSIÇÕES ==========
         
-        # TOPO DO PAINEL DIREITO (y=10): Filtros de veículos + Prioridades
-        next_y = self.draw_vehicle_filter_buttons(len(routes), y_offset=10)
-        
-        # GRÁFICO DE CONVERGÊNCIA (y=340): Posição fixa, não sobrepõe
-        self.draw_convergence_plot(y_offset=340)
-        
-        # ESTATÍSTICAS DO AG (y=625): Logo abaixo do gráfico
+        top_margin = int(10 * self.ui_scale)
+
+        # TOPO DO PAINEL DIREITO: Filtros de veículos + Prioridades
+        next_y = self.draw_vehicle_filter_buttons(len(routes), y_offset=top_margin)
+
+        # GRAFICO DE CONVERGENCIA: abaixo dos filtros
+        plot_y = next_y + int(8 * self.ui_scale)
+        plot_height = int(self.height * 0.27)
+        self.draw_convergence_plot(y_offset=plot_y, plot_height=plot_height)
+
+        # ESTATISTICAS DO AG: abaixo do grafico
+        stats_y = plot_y + plot_height + int(10 * self.ui_scale)
         if ag_stats:
-            self.draw_ag_statistics(ag_stats, y_offset=625)
-        
-        # MÉTRICAS GERAIS (y=820): Abaixo das estatísticas
-        self.draw_metrics(generation, best_fitness, len(routes), y_offset=820)
-        
-        # PARTE INFERIOR (y=930): Detalhes das rotas
-        if route_details:
+            self.draw_ag_statistics(ag_stats, y_offset=stats_y)
+
+        # METRICAS GERAIS: abaixo das estatisticas
+        metrics_y = stats_y + int(self.height * 0.18)
+        self.draw_metrics(generation, best_fitness, len(routes), y_offset=metrics_y)
+
+        # PARTE INFERIOR: Detalhes das rotas (so quando ha espaco vertical suficiente)
+        if route_details and self.height >= 900:
             self.draw_route_details(route_details)
         
         # Atualizar display

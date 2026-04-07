@@ -1,0 +1,40 @@
+2026-04-07 - Phase 1 UI/UX (web_viewer)
+
+- Aplicada hierarquia visual inicial no `web_viewer/app_streamlit.py`:
+  - hero de contexto;
+  - cards KPI em grid fluido;
+  - tabs reorganizadas com `Mapa` como entrada principal.
+- Padronizados estados de vazio/erro com cards visuais e dica de acao.
+- Melhorada escaneabilidade da tabela de rotas com truncamento + expander de detalhe.
+- Ajustado bloco de chat para status claro e fluxo visual consistente.
+- Criado tema base em `web_viewer/theme.css` (cores, espacamento, superficies e cards).
+- Funcionalidade preservada (sem alteracao de logica de negocio/algoritmo/API).
+
+2026-04-07 - Phase 2 UI/UX (web_viewer)
+
+- Refinada escala tipografica e densidade visual no `web_viewer/theme.css`.
+- Melhorado ritmo vertical com espacamento mais consistente entre hero, KPIs e secoes.
+- Unificados componentes (tabs, inputs, botoes, cards e tabela) para consistencia premium.
+- Ajustados microtextos de apoio em `web_viewer/app_streamlit.py` para clareza e tom operacional.
+- Mantida funcionalidade existente; alteracoes restritas ao design de interface.
+
+2026-04-07 - Phase 3 UI/UX (web_viewer)
+
+- Aplicadas microinteracoes visuais (hover/fade) em cards e controles para feedback premium.
+- Adicionados loading placeholders (skeleton) para mapa e relatorio.
+- Refinado bloco de chat com bolhas visuais distintas para usuario e assistente.
+- Mantida navegacao e comportamento funcional; apenas acabamento visual e estados.
+
+2026-04-07 - Design QA pass (final)
+
+- Melhorada acessibilidade visual com foco visivel para teclado.
+- Adicionado suporte a `prefers-reduced-motion`.
+- Ajustado chat para alinhamento diferenciado usuario/assistente.
+- Criados documentos de governanca de design: `DESIGN_SYSTEM.md`, `FRONTEND_GUIDELINES.md`, `APP_FLOW.md`, `PRD.md`, `TECH_STACK.md`.
+
+2026-04-07 - Simulacao ao vivo no web viewer
+
+- Adicionada aba `Ao vivo` em `web_viewer/app_streamlit.py` para executar AG no navegador.
+- Incluidos controles de veiculos, pontos e geracoes para teste interativo.
+- Incluido acompanhamento em tempo real por geracao (progresso, fitness melhor/medio e tabela de rotas).
+- Incluido mapa final da melhor geracao embutido na propria aba.

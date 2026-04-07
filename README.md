@@ -17,6 +17,41 @@ Sistema inteligente de otimização de rotas usando **Algoritmos Genéticos** + 
 
 ---
 
+## 🧭 TL;DR (30 segundos)
+
+Este projeto otimiza rotas de entrega de suprimentos médicos em Sao Paulo com Algoritmo Genetico, respeitando prioridade, capacidade e autonomia dos veiculos.
+
+Em uma execucao completa, ele:
+- calcula as melhores rotas;
+- mostra a evolucao em tempo real no Pygame;
+- gera mapa HTML no Folium;
+- opcionalmente usa LLM local (Ollama) para instrucoes e relatorio.
+
+Se voce precisa apresentar rapido, rode `python main.py`, escolha `3 veiculos`, `10 pontos`, `300 geracoes` e mostre:
+1) convergencia no Pygame; 2) mapa em `outputs/maps/`; 3) artefatos em `outputs/instructions/` e `outputs/reports/`.
+
+---
+
+## 🎯 Para Quem Este Projeto
+
+- estudantes e avaliadores que precisam demonstrar VRP com restricoes reais;
+- desenvolvedores que querem um exemplo pratico de AG + visualizacao + LLM local;
+- times que precisam de um baseline para prototipos logistico-medicos.
+
+---
+
+## 🔄 Fluxo do Sistema (fim-a-fim)
+
+1. Usuario escolhe parametros no menu Pygame (`veiculos`, `pontos`, `geracoes`).
+2. O AG evolui populacao e atualiza metricas visuais por geracao.
+3. Melhor solucao final gera mapa interativo (`Folium`).
+4. Se Ollama estiver ativo, o sistema gera:
+   - instrucoes por veiculo;
+   - relatorio gerencial da otimizacao.
+5. Opcionalmente, o usuario pode abrir o teste de Q&A com `python test_qa_system.py`.
+
+---
+
 ## 🎥 Demonstração
 
 > **Vídeo de apresentação do projeto:**
@@ -66,7 +101,7 @@ Este sistema resolve o **Vehicle Routing Problem (VRP)** aplicado à distribuiç
 
 ```bash
 # 1. Clonar o repositório
-git clone https://github.com/seu-usuario/Tech-Challenge-2.git
+git clone https://github.com/BernardoKawano/Tech-Challange-2.git
 cd Tech-Challenge-2
 
 # 2. Criar ambiente virtual
@@ -81,6 +116,16 @@ source .venv/bin/activate
 # 4. Instalar dependências
 pip install -r requirements.txt
 ```
+
+### Execucao minima (sem LLM)
+
+Se voce so quer validar o algoritmo e os mapas, pode executar sem Ollama:
+
+```bash
+python main.py
+```
+
+O sistema continua funcionando mesmo sem LLM; nesse caso, apenas instrucoes/relatorios podem falhar de forma controlada.
 
 ### 🤖 Configurar LLM (Ollama - Gratuito!)
 
@@ -115,6 +160,18 @@ python main.py
 - `outputs/instructions/` - Instruções por veículo (.txt)
 - `outputs/reports/` - Relatórios de eficiência (.md)
 - `logs/genetic/` - Logs do algoritmo (.json)
+
+---
+
+## 🗣️ Roteiro de Apresentacao (5-7 minutos)
+
+1. **Problema**: VRP medico com prioridade e restricoes reais.
+2. **Entrada**: mostrar `data/sample_delivery_points.json` e `data/sample_vehicles.json`.
+3. **Metodo**: explicar AG (fitness + operadores + elitismo).
+4. **Execucao ao vivo**: abrir `python main.py` e acompanhar convergencia.
+5. **Resultado visual**: abrir HTML em `outputs/maps/`.
+6. **Valor de negocio**: priorizacao de criticos e reducao de distancia/violacoes.
+7. **Extensoes**: tuning de pesos, novos dados, melhorar camada de Q&A.
 
 ---
 
@@ -415,6 +472,12 @@ python test_folium.py
 
 Gera mapa de teste em: `outputs/maps/teste_rotas_exemplo.html`
 
+### Testes automatizados (quando disponiveis)
+
+```bash
+pytest -q
+```
+
 ### Execução Completa
 
 ```bash
@@ -425,6 +488,24 @@ Gera mapa de teste em: `outputs/maps/teste_rotas_exemplo.html`
 # Tempo: ~5-8 minutos
 python main.py
 ```
+
+---
+
+## ⚠️ Limitações Conhecidas (transparencia para banca/demo)
+
+- A sessao de Q&A em `main.py` ainda orienta usar `test_qa_system.py` para teste completo.
+- A parte LLM depende de Ollama local ativo (`ollama serve`) e modelo baixado.
+- A janela Pygame permanece aberta ate acao manual do usuario (`Q`), o que impacta demos automatizadas.
+- O `requirements.txt` inclui dependencias amplas (algumas opcionais) para cenarios futuros.
+
+---
+
+## 🛠️ Troubleshooting rapido
+
+- **Erro de LLM/Ollama**: confirme `ollama serve` em execucao e modelo com `ollama pull llama2`.
+- **Tela nao abre**: valide instalacao do `pygame` e ambiente grafico local.
+- **Sem arquivos de saida**: confira permissoes de escrita e pastas `outputs/` e `logs/`.
+- **Execucao lenta**: reduza geracoes (ex.: 300) e pontos (ex.: 10) para demonstracao.
 
 ---
 
@@ -559,7 +640,7 @@ Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fi
 
 ### ⭐ Se este projeto foi útil, deixe uma estrela! ⭐
 
-**Status:** ✅ 100% Completo e Funcional
+**Status:** ✅ Funcional para AG + visualizacao + mapas, com melhorias incrementais em Q&A/documentacao
 
 Última atualização: Outubro 2025
 

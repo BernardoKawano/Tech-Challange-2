@@ -125,6 +125,36 @@ class QASystem:
             error_msg = f"❌ Erro ao processar pergunta: {e}"
             print(error_msg)
             return error_msg
+
+    def ask_stream(self, question: str) -> str:
+        """
+        Faz uma pergunta e transmite resposta em tempo real (quando suportado).
+
+        No provedor Ollama, os tokens sao exibidos gradualmente para UX conversacional.
+        Em outros provedores, faz fallback para ask() tradicional.
+        """
+        if not self.context:
+            return "❌ Erro: Nenhum contexto carregado. Execute load_context() primeiro."
+
+        print(f"\nPergunta: {question}")
+        prompt = self._build_qa_prompt(question)
+
+        try:
+            if self.provider == "ollama":
+                response = self._call_ollama_stream(prompt)
+            else:
+                response = self.ask(question)
+
+            self.conversation_history.append({
+                'question': question,
+                'answer': response,
+                'timestamp': datetime.now().isoformat()
+            })
+            return response
+        except Exception as e:
+            error_msg = f"❌ Erro ao processar pergunta: {e}"
+            print(error_msg)
+            return error_msg
     
     def _call_ollama(self, prompt: str, question: str) -> str:
         """Chama Ollama local."""
@@ -151,6 +181,37 @@ class QASystem:
         
         response = self.client.chat(model=self.model, messages=messages)
         return response['message']['content']
+
+    def _call_ollama_stream(self, prompt: str) -> str:
+        """Chama Ollama local com streaming token-a-token."""
+        messages = [
+            {
+                'role': 'system',
+                'content': (
+                    'Você é um assistente especializado em logística e otimização de rotas. '
+                    'Responda perguntas sobre rotas, entregas, veículos e métricas de forma '
+                    'CLARA, CONCISA e PRECISA. Use dados do contexto fornecido. '
+                    'Se a pergunta não puder ser respondida com os dados disponíveis, '
+                    'seja honesto e sugira alternativas. Seja profissional mas amigável.'
+                )
+            }
+        ]
+
+        for conv in self.conversation_history[-3:]:
+            messages.append({'role': 'user', 'content': conv['question']})
+            messages.append({'role': 'assistant', 'content': conv['answer']})
+
+        messages.append({'role': 'user', 'content': prompt})
+
+        full_text = ""
+        stream = self.client.chat(model=self.model, messages=messages, stream=True)
+        for chunk in stream:
+            token = chunk.get('message', {}).get('content', '')
+            if token:
+                print(token, end='', flush=True)
+                full_text += token
+        print()
+        return full_text
     
     def _call_openai(self, prompt: str, question: str) -> str:
         """Chama OpenAI API."""
@@ -354,7 +415,7 @@ INSTRUÇÕES:
 
 # Funções auxiliares para uso facilitado
 
-def interactive_qa_session(qa_system: QASystem):
+def interactive_qa_session(qa_system: QASystem, stream: bool = True):
     """
     Inicia uma sessão interativa de perguntas e respostas.
     
@@ -362,7 +423,7 @@ def interactive_qa_session(qa_system: QASystem):
         qa_system: Instância configurada do QASystem
     """
     print("\n" + "="*70)
-    print("💬 SESSÃO INTERATIVA DE PERGUNTAS E RESPOSTAS")
+    print("SESSAO INTERATIVA DE PERGUNTAS E RESPOSTAS")
     print("="*70)
     print("\nComandos especiais:")
     print("  • 'sair' ou 'exit' - Encerra a sessão")
@@ -374,28 +435,28 @@ def interactive_qa_session(qa_system: QASystem):
     
     while True:
         try:
-            question = input("\n💬 Você: ").strip()
+            question = input("\nVoce: ").strip()
             
             if not question:
                 continue
             
             if question.lower() in ['sair', 'exit', 'quit']:
-                print("\n👋 Encerrando sessão. Até logo!")
+                print("\nEncerrando sessao. Ate logo!")
                 break
             
             if question.lower() == 'melhorias':
-                print("\n🤖 Assistente:")
+                print("\nAssistente:")
                 print(qa_system.suggest_improvements())
                 continue
             
             if question.lower() == 'gargalos':
-                print("\n🤖 Assistente:")
+                print("\nAssistente:")
                 print(qa_system.find_bottlenecks())
                 continue
             
             if question.lower() == 'historico':
                 history = qa_system.get_conversation_history()
-                print(f"\n📜 Histórico: {len(history)} interações")
+                print(f"\nHistorico: {len(history)} interacoes")
                 for i, conv in enumerate(history, 1):
                     print(f"\n{i}. {conv['question'][:50]}...")
                 continue
@@ -405,12 +466,15 @@ def interactive_qa_session(qa_system: QASystem):
                 continue
             
             # Pergunta normal
-            print("\n🤖 Assistente:")
-            response = qa_system.ask(question)
-            print(response)
+            print("\nAssistente:")
+            if stream and qa_system.provider == "ollama":
+                qa_system.ask_stream(question)
+            else:
+                response = qa_system.ask(question)
+                print(response)
         
         except KeyboardInterrupt:
-            print("\n\n👋 Sessão interrompida. Até logo!")
+            print("\n\nSessao interrompida. Ate logo!")
             break
         
         except Exception as e:
