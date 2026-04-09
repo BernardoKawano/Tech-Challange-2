@@ -607,7 +607,7 @@ Este projeto é parte do **Tech Challenge #2 - FIAP** e foi desenvolvido para fi
 
 ## 👥 Autores
 
-- **[Seu Nome]** - Desenvolvimento completo
+- **Bernardo Kawano** - Desenvolvimento completo
 
 ### Contribuições
 
